@@ -1,0 +1,60 @@
+.btn{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 200px;
+  border-style: solid;
+  border-color: #000;
+  border-width: medium;
+  border-radius: 5px;
+}
+
+.btn:hover{
+  border-radius: 30px;
+  transition: 0.35s;
+}
+
+.card{
+  border-style: none;
+}
+
+
+.heading{
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  font-size: 4rem;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+}
+
+.maindiv{
+  height: 100vh;
+}
+
+.margin-tb{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.par{
+  font-family: 'Mulish', sans-serif;
+  font-weight: 200;
+  font-size: 2rem;
+}
+
+
+
+
+
+/* colors */
+
+.color-green{
+  background-color: #4DB33D
+}
+
+.color-gray{
+  background-color: #C1BEBC;
+}
+
+.text-arsenic{
+  color: #3F3E42
+}
