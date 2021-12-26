@@ -13,10 +13,34 @@
   transition: 0.35s;
 }
 
+.btn-logout{
+  width: 100px;
+  margin-left: 10px;
+}
+
 .card{
   border-style: none;
 }
 
+
+.container-fluid{
+  width: 95%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.font-mb{
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+
+.font-ml{
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
 
 .heading{
   font-family: 'Mulish', sans-serif;
@@ -35,6 +59,10 @@
   margin-bottom: 10px;
 }
 
+.nav-header{
+  margin-left: 2%;
+}
+
 .par{
   font-family: 'Mulish', sans-serif;
   font-weight: 200;
@@ -50,6 +78,11 @@
 .color-green{
   background-color: #4DB33D
 }
+
+.color-dgreen{
+  background-color: #3FA037
+}
+
 
 .color-gray{
   background-color: #C1BEBC;
