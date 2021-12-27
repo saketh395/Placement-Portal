@@ -11,13 +11,14 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
-const route = require("./routes/route");
-
 const saltRounds = 10;
+
+//custom toute files
+const route = require("./routes/route");
+const action = require("./routes/action");
 const app = express();
 
-
+app.use(express.static(__dirname + '/public'));
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
@@ -39,6 +40,7 @@ app.use(passport.session());
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
+  password: process.env.DB_PASS,
   database: process.env.DB_DATABASE
 });
 
@@ -87,9 +89,9 @@ passport.use('admin-login' , new LocalStrategy(
 
 passport.use('student-login' , new LocalStrategy(
   function(username, password, done) {
-    console.log(password);
+
     connection.query("SELECT * FROM student WHERE usn = ?", [ username], function(err, user, fields){
-      console.log(user[0].dob);
+
         if(user[0].dob=== password.toString()){
           return done(null, user, {message: 'Found user'});
         }
@@ -109,6 +111,7 @@ passport.use('company-login' , new LocalStrategy(
 
 
 app.use('/', route);
+app.use('/action', action);
 
 app.post('/authenticate/admin', passport.authenticate('admin-login', { successRedirect: '/admin', failureRedirect:'/admin_loginf' }), function(req, res) {
 
@@ -118,14 +121,14 @@ app.post('/authenticate/student', passport.authenticate('student-login', {succes
 
 });
 
-app.post('/authenticate /company', passport.authenticate('company-login', {successRedirect: '/compay', failureRedirect:'/company_loginf'}), function(req, res){});
+app.post('/authenticate /company', passport.authenticate('company-login', {successRedirect: '/company', failureRedirect:'/company_loginf'}), function(req, res){});
 
-//function to register admin with hash. One time thing
+// function to register admin with hash. One time thing
 // app.post('/authenticate/admin', function(req, res){
 //
 //   bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
 //     // Store hash in your password DB.
-//     connection.query('INSERT INTO admin VALUES ("admin, ?") ', [hash], function(err){
+//     connection.query('INSERT INTO admin VALUES ("admin", ?) ', [hash], function(err){
 //       if(err){
 //         console.log(err);
 //       }

@@ -8,12 +8,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0" >
-        <li class="nav-item margin-tb">
+        <!-- <li class="nav-item margin-tb">
           <a class="nav-link active" aria-current="page" href="/admin"><span class="font-ml">Home</span></a>
         </li>
         <li class="nav-item margin-tb">
           <a class="nav-link" href="#"><span class="font-ml">Link</span></a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="btn btn-light btn-logout color-grey" href="/logout" role="button">Logout</a>
         </li>
@@ -22,6 +22,92 @@
 </nav>
 
 <div class="container-fluid color-grey">
+<div class="row nav-secondary">
+  <div class="col-lg-3 col-md-6">
+<a class="btn btn-entry color-grey margin-tb" href="/addstudent" role="button"><span class="font-ml">Add Student</span></a>
+  </div>
+  <div class="col-lg-3 col-md-6">
+<a class="btn btn-entry color-grey margin-tb" href="/action/viewstudent" role="button"><span class="font-ml">View Students</span></a>
+  </div>
+
+  <div class="col-lg-3 col-md-6">
+  <a class="btn btn-entry color-grey margin-tb" href="#" role="button"><span class="font-ml">...</span></a>
+  </div>
+
+  <div class="col-lg-3 col-md-6">
+  <a class="btn btn-entry color-grey margin-tb" href="#" role="button"><span class="font-ml">...</span></a>
+  </div>
+
+
+</div>
+<div class="row">
+  <div class="col-lg-6 col-md-12">
+    <%if(task === 0){%>
+      <div class="card">
+        <div class="card-body">
+          <form  action="/action/addstudent" method="post">
+            <p class="par text-arsenic" style="font-size: 1.5rem">Enter Student Details</p>
+            <input type="text" class="form-control margin-tb" name="usn" placeholder="Enter USN">
+            <input type="date" class="form-control margin-tb" name="dob">
+            <br><br>
+            <button type="submit" class="btn color-green margin-tb"  value="0" class="btn color-green"><span class="font-ml">ADD</span></button>
+
+          </form>
+        </div>
+      </div>
+
+
+    <%}%>
+
+  <%  if (task===1) { %>
+
+    <div class="card">
+      <div class="card-body">
+          <p class="par text-arsenic" style="font-size: 1.5rem">Student Details</p>
+        <ul class="list-group list-group-flush"">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-lg-3 col-sm-12 col-md-4">
+                  <h3>USN</h3>
+              </div>
+              <div class="col-lg-3 col-sm-12 col-md-4">
+                  <h3>Date of Birth</h3>
+              </div>
+            </div>
+          </li>
+        <%  userData.forEach(function(i){%>
+            <li class="list-group-item">
+              <div class="row" style="">
+                <div class="col-lg-3 col-sm-12 col-md-4">
+                    <span class="font-ml"><%=i.usn%></span>
+                </div>
+                <div class="col-lg-3 col-sm-12 col-md-4" >
+                  <span class="font-ml"><%=i.dob%></span>
+
+                </div>
+                <div class="col-lg-3 col-sm-12 col-md-4">
+                  <form  action="/action/deleteStudent" method="post">
+                    <button class="btn btn-danger color-red" type="submit" value="<%=i.usn%>" name="delI" style=""><span>DELETE</span></button>
+
+                  </form>
+
+                </div>
+              </div>
+            </li>
+
+        <%  })%>
+
+
+
+        </ul>
+
+      </div>
+    </div>
+
+  <%  }%>
+
+  </div>
+</div>
 
 </div>
 
