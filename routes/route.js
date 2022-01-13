@@ -44,7 +44,7 @@ app.get("/student_login", function(req, res) {
   res.render("login", {
     pageTitle: 'Login: Student',
     userType: 'student',
-    failedAuth: false,
+    failedAuth: 'false',
   });
 });
 
@@ -52,7 +52,7 @@ app.get("/student_loginf", function(req, res) {
   res.render("login", {
     pageTitle: 'Login: Student',
     userType: 'student',
-    failedAuth: true,
+    failedAuth: 'true',
   });
 });
 
@@ -106,6 +106,42 @@ app.get("/company", function(req, res) {
     res.redirect("/company_login");
   }
 
+});
+
+app.get("/addjob",function(req,res){
+  if (req.isAuthenticated()) {
+  res.render('company',{
+    pageTitle:"Company",
+    task:0
+  });}
+  else{
+    res.redirect("/company_login");
+  }
+});
+
+app.get("/addexam",function(req,res){
+  if (req.isAuthenticated()) {
+  res.render('company',{
+    pageTitle:"Company",
+    task:2
+  });}
+  else{
+    res.redirect("/company_login");
+  }
+});
+
+app.get("/cupdate",function(req,res){
+  if (req.isAuthenticated()) {
+  res.render('company',{
+    pageTitle:"Company",
+    task:4,
+    cname:req.user[0].name,
+    ctype:req.user[0].c_type,
+    cdesc:req.user[0].description
+  });}
+  else{
+    res.redirect("/company_login");
+  }
 });
 
 app.get("/addstudent", (req, res) => {

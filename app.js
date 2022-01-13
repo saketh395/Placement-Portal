@@ -60,13 +60,11 @@ connection.connect((err) => {
 //   done(null, user);
 // });
 passport.serializeUser(function (user, done) {
-    console.log('serializing user:', user);
     done(null, user);
 });
 
 
 passport.deserializeUser(function (username, done) {
-    console.log('deserializing user:', username);
     done(null,username);
 });
 
@@ -101,9 +99,12 @@ passport.use('student-login' , new LocalStrategy(
 
 passport.use('company-login' , new LocalStrategy(
   function(username, password, done) {
-    connection.query('SELECT * FROM company WHERE username = ?', [username], function(err, user, fields){
-        if(user[0].password === password){
+    connection.query('SELECT * FROM company WHERE name = ?', [username], function(err, user, fields){
+        if(user[0].password === password.toString()){
           return done(null, user, {message: 'Found user'});
+        }
+        else{
+          return done(null, false, {message: 'Found user'});
         }
     });
   }
@@ -121,7 +122,9 @@ app.post('/authenticate/student', passport.authenticate('student-login', {succes
 
 });
 
-app.post('/authenticate /company', passport.authenticate('company-login', {successRedirect: '/company', failureRedirect:'/company_loginf'}), function(req, res){});
+app.post('/authenticate/company', passport.authenticate('company-login', {successRedirect: '/company', failureRedirect:'/company_loginf'}), function(req, res){});
+
+
 
 // function to register admin with hash. One time thing
 // app.post('/authenticate/admin', function(req, res){
@@ -144,6 +147,6 @@ app.post('/authenticate /company', passport.authenticate('company-login', {succe
 
 //listener
 
-app.listen(process.env.PORT || 3000, function() {
+app.listen(process.env.PORT || 4000, function() {
   console.log("Server started on 3000");
 });

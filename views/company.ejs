@@ -9,10 +9,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0" >
         <li class="nav-item margin-tb">
-          <a class="nav-link active" aria-current="page" href="/admin"><span class="font-ml">Home</span></a>
+          <a class="nav-link active" href="/addjob"><span class="font-ml" >Post Job</span></a>
         </li>
         <li class="nav-item margin-tb">
-          <a class="nav-link" href="#"><span class="font-ml">Link</span></a>
+          <a class="nav-link active" href="/action/viewjobs"><span class="font-ml">View Jobs</span></a>
+        </li>
+        <li class="nav-item margin-tb">
+          <a class="nav-link active" href="/addexam"><span class="font-ml">Post Exam</span></a>
+        </li>
+        <li class="nav-item margin-tb">
+          <a class="nav-link active" href="/action/viewexams"><span class="font-ml">View Exams</span></a>
+        </li>
+        <li class="nav-item margin-tb">
+          <a class="nav-link active" href="/cupdate"><span class="font-ml">Update</span></a>
         </li>
         <li class="nav-item">
           <a class="btn btn-light btn-logout color-grey" href="/logout" role="button">Logout</a>
@@ -20,9 +29,353 @@
     </div>
   </div>
 </nav>
+<% var task %>
+<% if(task===0) {%>
+    <div class="formbody color-grey row">
+        <h1 class="heading text-arsenic">JOB</h1>
+        <hr style="background-color: #3F3E42; height: 2px; opacity: 1; margin-top: 30px; margin-bottom: 30px">
+            <p class="par text-arsenic" style="font-size:1.5 rm">Enter Job Details</p>
+            <div class="card">
+                <div class="card-body">
+                    <form action="/action/addjob" method="post">
+                        <div class="form-group">
+                        <input type="text" class="form-control margin-tb" placeholder="Job Role" name="role">
+                        </div>
+                        <div class="form-group">
+                          <input type="text" class="form-control margin-tb" placeholder="Student Branch" name="branch">
+                      </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control margin-tb" placeholder="Job Location" name="location">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control margin-tb" placeholder="Package (LPA)" name="package">
+                        </div>
+                        <button type="submit" style="width:100%" value="0" class="btn color-green">Add</button>
+                       
+                    </form>
+                </div>
+            </div>
+    </div>
+  <%}%>
+<% if(task===1) {%>
 
-<div class="container-fluid color-grey">
-
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <p class="par text-arsenic" style="font-size: 1.5rem">Jobs Posted</p>
+        <ul class="list-group list-group-flush"">
+        <li class=" list-group-item">
+          <div class="row">
+            <div class="col">
+              <h3>Job ID</h3>
+            </div>
+            <div class="col">
+              <h3>Role</h3>
+            </div>
+            <div class="col">
+              <h3>Location</h3>
+            </div>
+            <div class="col">
+              <h3>Package(LPA)</h3>
+            </div>
+            <div class="col">
+              <h3 hidden>Delete</h3>
+            </div>
+            <div class="col">
+              <h3 hidden>Delete</h3>
+            </div>
+          </div>
+          </li>
+          <% jobData.forEach(function(i){ 
+             %>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">
+                <span class="font-ml"><%=i.j_id%></span>
+              </div>
+              <div class="col">
+                <span class="font-ml"><%=i.role%></span>
+              </div>
+              <div class="col">
+                <span class="font-ml"><%=i.location%></span>
+              </div>
+              <div class="col">
+                <span class="font-ml"><%=i.package%></span>
+              </div>
+              <div class="col">
+                <form action="/action/viewjstudents" method="post">
+                  <button class="btn color-green" type="submit" value="<%=i.j_id%>"
+                    name="delI"><span><b>Apllied Students</b></span></button>
+                </form>
+              </div>
+              <div class="col">
+                <form action="/action/deletejob" method="post">
+                  <button class="btn btn-danger color-red" type="submit" value="<%=i.j_id%>"
+                    name="delI"><span>DELETE</span></button>
+                </form>
+              </div>
+            </div>
+          </li>
+          <%})%>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
+  
+  <%}%>
 
+  <% if(task===2) {%>
+      <div class="formbody color-grey row">
+          <h1 class="heading text-arsenic">Exam</h1>
+          <hr style="background-color: #3F3E42; height: 2px; opacity: 1; margin-top: 30px; margin-bottom: 30px">
+              <p class="par text-arsenic" style="font-size:1.5 rm">Enter Exam Details</p>
+              <div class="card">
+                  <div class="card-body">
+                      <form action="/action/addexam" method="post">
+                          <div class="form-group">
+                          <input type="text" class="form-control margin-tb" placeholder="exam name" name="ename">
+                          </div>
+                          <div class="form-group">
+                              <input type="date" class="form-control margin-tb" name="edate">
+                          </div>
+                          <div class="form-group">
+                              <input type="time" class="form-control margin-tb"  name="etime">
+                          </div>
+                          <button type="submit" style="width:100%" value="0" class="btn color-green">Add</button>
+                         
+                      </form>
+                  </div>
+              </div>
+      </div>
+    
+    <%}%>
+    <% if(task===3) {%>
+
+      <div class="card">
+        <div class="card-body">
+          <p class="par text-arsenic" style="font-size: 1.5rem">Exams Posted</p>
+          <ul class="list-group list-group-flush"">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col">
+                  <h3>Exam Id</h3>
+              </div>
+                <div class="col">
+                    <h3>Exam name</h3>
+                </div>
+                <div class="col">
+                    <h3>Date</h3>
+                </div>
+                <div class="col">
+                  <h3>Time</h3>
+              </div>
+              <div class="col">
+                <h3 hidden>Delete</h3>
+            </div>
+            <div class="col">
+              <h3 hidden>Delete</h3>
+          </div>
+              </div>
+            </li>
+            <%
+            function tconvert(time){
+              if(time.length>1){
+                   var a="",b="",c="";
+                    if(Number(time.slice(0,2))>12){
+                      a=(Number(time.slice(0,2))-12).toString();
+                      if(a.length==1)
+                      a="0"+a;
+                      b=time.slice(3,5);
+                      c="PM"
+                    }
+                    else if(time.slice(0,2)=="00")
+                    {
+                      a="12";
+                      b=time.slice(3,5);
+                      c="AM"
+                    }
+                    else
+                    {
+                      a=time.slice(0,2);
+                      b=time.slice(3,5);
+                      c="AM"
+                    }
+                  return a+":"+b+":"+c;
+              }
+            } examData.forEach(function(i){ 
+              %>
+              <li class="list-group-item">
+                <div class="row" >
+                  <div class="col">
+                    <span class="font-ml"><%=i.e_id%></span>
+                   </div>
+                  <div class="col">
+                    <span class="font-ml"><%=i.ename%></span>
+                   </div>
+                  <div class="col">
+                    <span class="font-ml"><%=i.date.toString().slice(0,15)%></span>
+                  </div>
+                  <div class="col">
+                     <span class="font-ml"><%=tconvert(i.time.slice(0,7));%></span>
+                   </div>
+                   <div class="col">
+                    <form action="/action/viewestudents" method="post">
+                      <button class="btn color-green" type="submit" value="<%=i.e_id%>"
+                        name="delI"><span><b>Apllied Students</b></span></button>
+                    </form>
+                  </div>
+                    <div class="col">
+                    <form action="/action/deleteexam" method="post">
+                      <button class="btn btn-danger color-red" type="submit" value="<%=i.e_id%>"
+                        name="delI"><span>DELETE</span></button>
+                    </form>
+                  </div>
+                </div>
+              </li>
+            <%})%>
+          </ul>
+        </div>
+      </div>
+      
+      <%}%>
+      <% if(task===4) {%>
+        <div class="formbody color-grey row">
+            <h1 class="heading text-arsenic">Details</h1>
+            <hr style="background-color: #3F3E42; height: 2px; opacity: 1; margin-top: 30px; margin-bottom: 30px">
+                <p class="par text-arsenic" style="font-size:1.5 rm">Update Details</p>
+                <div class="card">
+                    <div class="card-body">
+                        <form action="/action/cupdate" method="post">
+                            <div class="form-group">
+                            <input type="text" class="form-control margin-tb" placeholder="Company name" value="<%=cname%>" name="cname" title="Company name">
+                            </div>
+                            <div class="form-group">
+                              <input type="text" class="form-control margin-tb" placeholder="Company type" value="<%=ctype%>" name="ctype" title="Company type">
+                          </div>
+                          <div class="form-group">
+                              <textarea rows = "3" cols = "50" class="form-control margin-tb" style="resize: none;" name = "cdesc" placeholder="description..."  value="<%=cdesc%>"></textarea><br>
+                          </div>
+                            <button type="submit" style="width:100%" value="0" class="btn color-green">Add</button>
+                           
+                        </form>
+                    </div>
+                </div>
+        </div>
+      
+      <%}%>
+      <% if(task===5) {%>
+
+        <div class="card">
+          <div class="card-body">
+            <p class="par text-arsenic" style="font-size: 1.5rem">Attempted Students</p>
+            <ul class="list-group list-group-flush"">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col">
+                      <h3>USN</h3>
+                  </div>
+                  <div class="col">
+                      <h3>Name</h3>
+                  </div>
+                  <div class="col">
+                    <h3>Status</h3>
+                </div>
+                <div class="col">
+                  <h3 hidden>Status</h3>
+              </div>
+                </div>
+              </li>
+              <% estudData.forEach(function(i){ 
+                %>
+                <li class="list-group-item">
+                  <div class="row" >
+                    <div class="col">
+                      <span class="font-ml"><%=i.usn%></span>
+                     </div>
+                    <div class="col">
+                      <span class="font-ml"><%=i.name%></span>
+                     </div>
+                    <div class="col">
+                      <span class="font-ml"><%=i.status%></span>
+                    </div>
+                    <div class="col">
+                      <form action="/action/updateestatus" method="post">
+                        <input type="text" value="<%=i.usn%>" name="usn" id="usn" hidden>
+                        <input list="statuses" name="status" id="status">
+                        <datalist id="statuses">
+                          <option value="Qualified">
+                          <option value="Not Qualified">
+                          <option value="Pending">  
+                        </datalist>
+                        <button class="btn btn-update color-green" type="submit" value="<%=i.e_id%>"
+                          name="delI"><span>update</span></button>
+                      </form>
+                    </div>
+                     
+                  </div>
+                </li>
+              <%})%>
+            </ul>
+          </div>
+        </div>
+        
+        <%}%>
+        <% if(task===6) {%>
+
+          <div class="card">
+            <div class="card-body">
+              <p class="par text-arsenic" style="font-size: 1.5rem">Apllied Students</p>
+              <ul class="list-group list-group-flush"">
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col">
+                        <h3>USN</h3>
+                    </div>
+                    <div class="col">
+                        <h3>Name</h3>
+                    </div>
+                    <div class="col">
+                      <h3>Status</h3>
+                  </div>
+                  <div class="col">
+                    <h3 hidden>Status</h3>
+                </div>
+                  </div>
+                </li>
+                <% jstudData.forEach(function(i){ 
+                  %>
+                  <li class="list-group-item">
+                    <div class="row" >
+                      <div class="col">
+                        <span class="font-ml"><%=i.usn%></span>
+                       </div>
+                      <div class="col">
+                        <span class="font-ml"><%=i.name%></span>
+                       </div>
+                      <div class="col">
+                        <span class="font-ml"><%=i.status%></span>
+                      </div>
+                      <div class="col">
+                        <form action="/action/updatejstatus" method="post">
+                          <input type="text" value="<%=i.usn%>" name="usn" id="usn" hidden>
+                          <input list="status1" name="jstatus" id="jstatus">
+                          <datalist id="status1">
+                            <option value="Accepted">
+                            <option value="Rejected">  
+                          </datalist>
+                          <button class="btn btn-update color-green" type="submit" value="<%=i.j_id%>"
+                            name="delI"><span>Update</span></button>
+                        </form>
+                      </div>
+                       
+                    </div>
+                  </li>
+                <%})%>
+              </ul>
+            </div>
+          </div>
+          
+          <%}%>
 <%- include('partials/footer'); -%>
