@@ -475,7 +475,7 @@ app.post('/cupdate',function(req,res){
   }
 
 });
-
+//view resume in company portal
 app.post("/cviewresume", (req, res) => {
   if (req.isAuthenticated()) {
     const usn = req.body.delI;
