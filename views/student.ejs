@@ -3,16 +3,49 @@
 <nav class="navbar navbar-expand-lg navbar-light color-green">
   <div class="container-fluid">
     <a class="navbar-brand " href="#"><span class="font-mb">STUDENT</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0" >
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item margin-tb">
-          <a class="nav-link active" aria-current="page" href="/admin"><span class="font-ml">Home</span></a>
+          <a class="nav-link active" href="/student" aria-current="page"><span class="font-ml nl">Home</span></a>
         </li>
         <li class="nav-item margin-tb">
-          <a class="nav-link" href="#"><span class="font-ml">Link</span></a>
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <span class="font-ml nl">Exams</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a title="view exams" class="dropdown-item"  href="/action/student/viewexam">View Exams</a></li>
+              <li><a title="download" class="dropdown-item" href="/action/student/appliedexams">Applied Exams</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item margin-tb">
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <span class="font-ml nl">Job Offers</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a title="view jobs" class="dropdown-item"  href="/action/student/viewjobs">View Jobs</a></li>
+              <li><a title="applied jobs" class="dropdown-item" href="/action/student/appliedjobs">Applied Jobs</a></li>
+            </ul>
+          </div>
+        </li>
+       
+        <li class="nav-item margin-tb">
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <span class="font-ml nl">Resume</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a title="create resume" class="dropdown-item" href="/action/resumeCheck">Build Resume</a></li>
+              <li><a title="view resume" class="dropdown-item" href="/action/viewresume">View Resume</a></li>
+              <li><a title="download" class="dropdown-item" href="#">Download resume</a></li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
           <a class="btn btn-light btn-logout color-grey" href="/logout" role="button">Logout</a>
@@ -21,8 +54,560 @@
   </div>
 </nav>
 
+<%
+function tconvert(time){                    
+  if(time.length>1){
+       var a="",b="",c="";
+        if(Number(time.slice(0,2))>12){
+          a=(Number(time.slice(0,2))-12).toString();
+          if(a.length==1)
+          a="0"+a;
+          console.log(a);
+          b=time.slice(3,5);
+          c="PM"
+        }
+        else if(time.slice(0,2)=="00")
+        {
+          a="12";
+          b=time.slice(3,5);
+          c="AM"
+        }
+        else
+        {
+          a=time.slice(0,2);
+          b=time.slice(3,5);
+          c="AM"
+        }
+      return a+":"+b+" "+c;
+  }
+}%>
+<% var task %>
+<%  if(task===0) { %>
+
 <div class="container-fluid color-grey">
+
+  <div class="rt-container">
+    <div class="col-rt-12">
+      <div class="Scriptcontent">
+
+        <!-- Student Profile -->
+
+        <div class="student-profile py-4">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="row">
+                    <div class="card">
+                      <div class="card-body">
+                        Image here
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="card">
+                    <div class="card-header bg-transparent text-center">
+
+                      <h3><%= student_name %></h3>
+                    </div>
+                    <div class="card-body">
+                        
+                      <table class="table table-bordered">
+                        <tr>
+                          <th width="30%">USN</th>
+                          <td width="2%">:</td>
+                          <td><%= student_usn %></td>
+                        </tr>
+                        <tr>
+                          <th width="30%">Semester </th>
+                          <td width="2%">:</td>
+                          <td><%= student_sem %></td>
+                        </tr>
+                        <tr>
+                          <th width="30%">Section</th>
+                          <td width="2%">:</td>
+                          <td><%= student_section %></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="card ">
+                    <div class="card-header bg-transparent border-0">
+                      <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                      <table class="table table-bordered">
+                        <tr>
+                          <th width="30%">USN</th>
+                          <td width="2%">:</td>
+                          <td><%= student_usn %></td>
+                        </tr>
+                        <tr>
+                          <th width="30%">Branch</th>
+                          <td width="2%">:</td>
+                          <td><%= student_branch %></td>
+                        </tr>
+                        <tr>
+                          <th width="30%">Date of Birth</th>
+                          <td width="2%">:</td>
+                          <td><%= student_dob %></td>
+                        </tr>
+                        <tr>
+                          <th width="30%">Degree Year </th>
+                          <td width="2%">:</td>
+                          <td>20<%=student_usn.toString().substring(3,5)%> - 20<%=(parseInt(student_usn.toString().substring(3,5))+4).toString()%> </td>
+                        </tr>
+                        <tr>
+                          <th width="30%">Gender</th>
+                          <td width="2%">:</td>
+                          <td><%= student_gender %></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             
+
+             
+            </div>
+          </div>
+        </div>
+        <!-- partial -->
+
+      </div>
+    </div>
+  </div>
+
+  <%  } %>
+
+  <% if(task===1) {%>
+    <%var applied %>
+    <%var results %>
+    <%var companies %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title text-uppercase subhead">UPCOMING EXAMS </h5>
+          
+          <div class="table-responsive">
+            <table class="table ">
+              <thead >
+                <tr>
+
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam ID</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam Name</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Company Name</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Date</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Time</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Apply</th>
+                </tr>
+              </thead>
+            
+              <tbody>
+            
+                <% results.forEach(function (i) { %>
+                 <% if (applied.includes(i.e_id)===false){ %>
+                    <tr class="align-middle">
+                      <td>
+                        <h5 class="font-medium mb-0"><%= i.e_id %></h5>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%= i.ename %></span>
+                      <td>
+                        
+                        <span class="text-muted"><%= companies[i.c_id] %></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%= i.date.toString().slice(0,15) %></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%=tconvert(i.time.slice(0,7));%></span>
+                      </td>                   
+                      <td>
+                          <form action="/action/applyExam" method="post">
+                            <button type="submit" name="appliedexam" class="btn color-green " value="<%= i.e_id %>">APPLY </button>
+                          </form>                   
+                      </td>                                           
+                    </tr>
+                <%  } %>               
+                <% } ) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }%>
+  <% if(task===2) {%>
+    <%var applied %>
+    <%var companies %>
+    <%var results %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title text-uppercase subhead">APPLIED EXAMS </h5>         
+          <div class="table-responsive">
+            <table class="table ">
+              <thead >
+                <tr>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam ID</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam Name</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Company Name</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Date</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Time</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Cancel Application</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Result</th>
+                </tr>
+              </thead>
+            
+              <tbody>
+                <% results.forEach(function (i) { %>
+
+                 <% if ((i.e_id in applied)){ %>
+                    <tr class="align-middle">
+                      <td>
+                        <h5 class="font-medium mb-0"><%= i.e_id %></h5>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%= i.ename %></span>
+                      <td>
+                        <span class="text-muted"><%= companies[i.c_id] %></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%= i.date.toString().slice(0,15) %></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%=tconvert(i.time.slice(0,7));%></span>
+                      </td>                      
+                      <td>
+                        <% if (applied[i.e_id] === "p" || applied[i.e_id] === "q" || applied[i.e_id] === "nq"){ %>
+                        <form action="/action/cancelExam" method="post">
+                        <button type="submit" name="appliedexam" class="btn btn-danger color-red " value="<%= i.e_id %>" disabled>CANCEL</button>
+                      </form>  
+                      </td>
+                      <td>
+                        <%if( applied[i.e_id] === "q"){%>
+                          <button class="infobutton color-green">Qualified</button>
+                        <%}else if ( applied[i.e_id] === "nq"){%>
+                          <button class="infobutton color-red">Not Qualified</button>
+                       <% }else if ( applied[i.e_id] === "p"){%>
+                          <button class="infobutton color-blue">Pending</button>
+                       <% } %>
+                        
+                      <% }else { %>  
+                        <form action="/action/cancelExam" method="post">
+                          <button type="submit" name="appliedexam" class="btn btn-danger color-red " value="<%= i.e_id %>" >CANCEL</button>
+                        </form>  
+                     <% } %>
+                      </td>                                         
+                    </tr>
+                <%  } %>               
+                <% } ) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }%>
+
+  <% if(task===3) {%>
+    <%var applied %>
+    <%var japplied %>
+    <%var results %>
+    <%var companies %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title text-uppercase subhead">JOB OFFERINGS </h5>
+          
+          <div class="table-responsive">
+            <table class="table ">
+              <thead >
+                <tr>
+
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Job ID</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Offering Company</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Role</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Location</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Package</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Apply</th>
+                </tr>
+              </thead>
+            
+              <tbody>
+               
+                <% results.forEach(function (i) { %>
+                 <% if (japplied.includes(i.j_id)===false){ %>
+                    <tr class="align-middle">
+                      <td>
+                        <h5 class="font-medium mb-0"><%= i.j_id %></h5>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%= companies[i.c_id] %></span>
+                      <td>
+                        
+                        <span class="text-muted"><%= i.role %></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%= i.location %></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%=i.package%></span>
+                      </td>                   
+                      <td>
+                          <form action="/action/applyJob" method="post">
+                           <% if(applied[i.e_id] === "q"){ %>
+                              <button type="submit" name="appliedjob" class="btn color-green " value="<%= i.j_id %>">APPLY </button>
+                          <%  }else{ %>
+                              <button type="submit" name="appliedjob" class="btn color-green " value="<%= i.e_id %>" disabled>APPLY </button>
+                          <%  } %>
+                            
+                          </form>                   
+                      </td>                                           
+                    </tr>
+                <%  } %>               
+                <% } ) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }%>
+
+  <% if(task===4) {%>
+    <%var applied %>
+    <%var japplied %>
+    <%var companies %>
+    <%var results %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title text-uppercase subhead">APPLIED JOBS </h5>         
+          <div class="table-responsive">
+            <table class="table ">
+              <thead >
+                <tr>
+                  
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Job ID</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Offering Company</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Role</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Location</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Package</th>
+                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Cancel Application</th>
+                </tr>
+              </thead>
+            
+              <tbody>
+                <% results.forEach(function (i) { %>
+
+                 <% if (japplied.includes(i.j_id)===true){ %>
+                  <tr class="align-middle">
+                    <td>
+                      <h5 class="font-medium mb-0"><%= i.j_id %></h5>
+                    </td>
+                    <td>
+                      <span class="text-muted"><%= companies[i.c_id] %></span>
+                    <td>
+                      
+                      <span class="text-muted"><%= i.role %></span>
+                    </td>
+                    <td>
+                      <span class="text-muted"><%= i.location %></span>
+                    </td>
+                    <td>
+                      <span class="text-muted"><%=i.package%></span>
+                    </td>                   
+                    <td>
+                      <form action="/action/cancelJob" method="post">
+                        <button type="submit" name="appliedjob" class="btn btn-danger color-red " value="<%= i.j_id %>">CANCEL</button>
+                      </form>                  
+                    </td>                                           
+                  </tr>
+                <%  } %>               
+                <% } ) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }%>
+
 
 </div>
 
-<%- include('partials/footer'); -%>
+<div class="row">
+  <div class="col-lg-6 col-md-12">
+
+    <%var rexists%>
+    <% if(rexists === true){ %>
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <h1 class="font-mb subhead" style="font-size: 2rem; color: red">Resume already exits</h1>
+            </div>
+            <div class="row">
+              <a class="btn color-green  margin-tb subhead" style="width: 50%;" href="/action/viewresume"
+              role="button"><span class="font-ml" style="font-size: 1.5rem;">View Resume</span></a>
+            </div>         
+          </div>
+        </div>
+      </div>
+    <%}%>
+      
+    <%if(task === 201){%>
+
+    <div class="card">
+      <div class="card-body">
+        <form action="/action/buildresume" method="post">
+          <input type="text" class="form-control margin-tb" name="degree_program"
+            placeholder="Enter Degree/Program(BE/BTec/PhD/..)">
+          <input type="text" class="form-control margin-tb" name="fieldofstudy"
+            placeholder="Enter Field of Study(CSE/IS/..)">
+          <input type="double" class="form-control margin-tb" name="cgpa" placeholder="CGPA">
+          <input type="text" class="form-control margin-tb" name="rel" placeholder="Relevent Courses">
+          <input type="text" class="form-control margin-tb" name="honor"
+            placeholder="Award/Honours(BE Honours/BTEC Honours)">
+          <input type="text" class="form-control margin-tb" name="activity"
+            placeholder="Extracurricular Activity(NSS/NCC/..)">
+          <input type="text" class="form-control margin-tb" name="skill" placeholder="Additional Skills">
+          <input type="text" class="form-control margin-tb" name="hobbies" placeholder="Hobbies"><br><br>
+          <p class="par text-arsenic" style="font-size: 1.5rem">Work Experiance/Internship</p>
+          <input type="text" class="form-control margin-tb" name="addcompany" placeholder="Add Company">
+          <input type="text" class="form-control margin-tb" name="job" placeholder="Add Job Title">
+          <input type="int" class="form-control margin-tb" name="workdays" placeholder="Number of Working Days"><br><br>
+          <p class="par text-arsenic" style="font-size: 1.5rem">Project Details</p>
+          <input type="text" class="form-control margin-tb" name="ptitle" placeholder="Project Titles"><br><br>
+          <p class="par text-arsenic" style="font-size: 1.5rem">References</p>
+          <input type="text" class="form-control margin-tb" name="references" placeholder="Refernces">
+          <br><br>
+          <button type="submit" class="btn color-green margin-tb" value="0" class="btn color-green"><span
+              class="font-ml">ADD</span></button>
+        </form>
+      </div>
+    </div>
+
+
+    <%}%>
+    <%  if (task===202) { %>
+<div class="container-fluid color-grey">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="font-mb subhead">Resume </h1><hr><br>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <%var fields = {
+              name: 'Name', usn: 'USN', sem: 'Semester', section:'Section', dob:'Date of Birth', 
+              gender: 'Gender', deg: 'Degree/Program', fos:  'Field of Study', cgpa: 'CGPA', rel: 'Relevent Courses',
+              hon: 'Awards/Honors', exact: 'ExtraCurricular Activites', skill:  'Additional skills', hob: 'Hobbies',
+              comp: 'Company Name', job: 'Job Title', wdays: 'Number of working days', ptitle: 'Project Titles', ref: 'References'
+            }%>
+            <% var i =0 %>
+            <% for (let [key, value] of Object.entries(fields)){ %>
+            <div class="row">
+             <% if(i==14){%>
+                <h2 class="subhead">Work Experience / Internship</h2>
+             <% }
+              if(i==17){%>
+                <h2 class="subhead">Projects</h2>
+            <%  }
+              if(i==18){%>
+                <h2 class="subhead">References</h2>
+           <%  } 
+           if (i==0){%>
+            <h2 class="subhead">General Info</h2>
+         <%  } %>
+              <div class="col-lg-6"><span class="font-ml" style="font-size: 1.3rem;"><%=fields[key] %> </span></div>
+             <% if (i===4){ %>
+                <div class="col-lg-6"><span class="font-ml"><%=userData[key].toString().slice(3,15)%></span></div>
+             <% }else{ %>
+                <div class="col-lg-6"><span class="font-ml"><%=userData[key]%></span></div>          
+              <% } i = i+1%>
+            </div>
+            <hr>
+            <% }%>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+    <%  }%>
+
+  </div>
+</div>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-lg-6 col-md-12">
+
+    <%if(task === 203){%>
+    <% var userData %>
+    <div class="card">
+      <div class="card-body">
+        <p class="font-mb subhead" style="font-size: 2rem">Edit Resume</p><hr>
+        <form action="/action/edit_resume" method="post">
+          <p class="par text-arsenic" style="font-size: 1.5rem">General Info</p>
+          <input type="text" class="form-control margin-tb" name="degree_program"
+            placeholder="Enter Degree/Program(BE/BTec/PhD/..)" value="<%=userData[0].deg%>">
+          <input type="text" class="form-control margin-tb" name="fieldofstudy"
+            placeholder="Enter Field of Study(CSE/IS/..)" value="<%=userData[0].fos%>">
+          <input type="double" class="form-control margin-tb" name="cgpa" placeholder="CGPA"
+            value="<%=userData[0].cgpa%>">
+          <input type="text" class="form-control margin-tb" name="rel" placeholder="Relevent Courses"
+            value="<%=userData[0].rel%>">
+          <input type="text" class="form-control margin-tb" name="honor"
+            placeholder="Award/Honours(BE Honours/BTEC Honours)" value="<%=userData[0].hon%>">
+          <input type="text" class="form-control margin-tb" name="activity"
+            placeholder="Extracurricular Activity(NSS/NCC/..)" value="<%=userData[0].exact%>">
+          <input type="text" class="form-control margin-tb" name="skill" placeholder="Additional Skills"
+            value="<%=userData[0].skill%>">
+          <input type="text" class="form-control margin-tb" name="hobbies" placeholder="Hobbies"
+            value="<%=userData[0].hob%>"><br><br>
+          <p class="par text-arsenic" style="font-size: 1.5rem">Work Experiance/Internship</p>
+          <input type="text" class="form-control margin-tb" name="addcompany" placeholder="Add Company"
+            value="<%=userData[0].comp%>">
+          <input type="text" class="form-control margin-tb" name="job" placeholder="Add Job Title"
+            value="<%=userData[0].job%>">
+          <input type="int" class="form-control margin-tb" name="workdays" placeholder="Number of Working Days"
+            value="<%=userData[0].wdays%>"><br><br>
+          <p class="par text-arsenic" style="font-size: 1.5rem">Project Details</p>
+          <input type="text" class="form-control margin-tb" name="ptitle" placeholder="Project Titles"
+            value="<%=userData[0].ptitle%>"><br><br>
+          <p class="par text-arsenic" style="font-size: 1.5rem">References</p>
+          <input type="text" class="form-control margin-tb" name="references" placeholder="Refernces"
+            value="<%=userData[0].ref%>">
+          <br><br>
+          <button type="submit" class="btn color-green margin-tb" value="0"><span
+              class="font-ml">Edit</span></button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+    <%}%>
+
+
+    <%- include('partials/footer'); -%>
