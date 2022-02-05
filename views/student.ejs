@@ -12,12 +12,16 @@
           <a class="nav-link active" href="/student" aria-current="page"><span class="font-ml nl">Home</span></a>
         </li>
         <li class="nav-item margin-tb">
+          <a class="nav-link" href="/action/get_student_update" aria-current="page"><span class="font-ml nl">Update
+              Details</span></a>
+        </li>
+        <li class="nav-item margin-tb">
           <div class="dropdown">
             <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
               <span class="font-ml nl">Exams</span>
             </a>
             <ul class="dropdown-menu">
-              <li><a title="view exams" class="dropdown-item"  href="/action/student/viewexam">View Exams</a></li>
+              <li><a title="view exams" class="dropdown-item" href="/action/student/viewexam">View Exams</a></li>
               <li><a title="download" class="dropdown-item" href="/action/student/appliedexams">Applied Exams</a></li>
             </ul>
           </div>
@@ -29,12 +33,12 @@
               <span class="font-ml nl">Job Offers</span>
             </a>
             <ul class="dropdown-menu">
-              <li><a title="view jobs" class="dropdown-item"  href="/action/student/viewjobs">View Jobs</a></li>
+              <li><a title="view jobs" class="dropdown-item" href="/action/student/viewjobs">View Jobs</a></li>
               <li><a title="applied jobs" class="dropdown-item" href="/action/student/appliedjobs">Applied Jobs</a></li>
             </ul>
           </div>
         </li>
-       
+
         <li class="nav-item margin-tb">
           <div class="dropdown">
             <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -43,7 +47,7 @@
             <ul class="dropdown-menu">
               <li><a title="create resume" class="dropdown-item" href="/action/resumeCheck">Build Resume</a></li>
               <li><a title="view resume" class="dropdown-item" href="/action/viewresume">View Resume</a></li>
-              <li><a title="download" class="dropdown-item" href="#">Download resume</a></li>
+          
             </ul>
           </div>
         </li>
@@ -82,135 +86,227 @@ function tconvert(time){
   }
 }%>
 <% var task %>
-<%  if(task===0) { %>
 
-<div class="container-fluid color-grey">
+<% if(task === 301) { %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6">
+      <%var user %>
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title text-uppercase subhead">UPDATE STUDENT DETAILS </h5>
+            <form action="/action/student_update" method="post">
+              <p class="par margin-tb" style="font-size: 1.2rem">Name</p>
+              <input type="text" class="form-control margin-tb" name="name" placeholder="Enter name"
+                value="<%=user[0].name%>">
+              <p class="par margin-tb" style="font-size: 1.2rem">USN</p>
+              <input type="text" class="form-control margin-tb" name="usn" placeholder="Enter USN"
+                value="<%=user[0].usn%>" disabled>
+              <p class="par margin-tb" style="font-size: 1.2rem">Date of Birth</p>
+              <input type="text" class="form-control margin-tb" name="dob" placeholder="Enter DOB"
+                value="<%=user[0].dob.toString().slice(3,15)%>" disabled>
+              <p class="par margin-tb" style="font-size: 1.2rem">Branch</p>
+              <input type="text" class="form-control margin-tb" name="bid" placeholder="Enter branch"
+                value="<%=user[0].b_id%>" disabled>
+              <p class="par margin-tb" style="font-size: 1.2rem">Semester</p>
+              <input type="text" class="form-control margin-tb" name="sem" placeholder="Enter Semester"
+                value="<%=user[0].sem%>">
+              <p class="par margin-tb" style="font-size: 1.2rem">Section</p>
+              <input type="text" class="form-control margin-tb" name="section" placeholder="Enter Section"
+                value="<%=user[0].section%>">
+              <p class="par margin-tb" style="font-size: 1.2rem">Gender</p>
+              <select name="gender" style="height: 30px; width: 120px;">
 
-  <div class="rt-container">
-    <div class="col-rt-12">
-      <div class="Scriptcontent">
+                <%if(user[0].gender === "Male") { %>
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+                <% }else{ %>
+                <option value="Male">Male</option>
+                <option value="Female" selected>Female</option>
+                <% } %>
 
-        <!-- Student Profile -->
-
-        <div class="student-profile py-4">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="row">
-                    <div class="card">
-                      <div class="card-body">
-                        Image here
-                      </div>
-                    </div>
-                </div>
-                <div class="row">
-                  <div class="card">
-                    <div class="card-header bg-transparent text-center">
-
-                      <h3><%= student_name %></h3>
-                    </div>
-                    <div class="card-body">
-                        
-                      <table class="table table-bordered">
-                        <tr>
-                          <th width="30%">USN</th>
-                          <td width="2%">:</td>
-                          <td><%= student_usn %></td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Semester </th>
-                          <td width="2%">:</td>
-                          <td><%= student_sem %></td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Section</th>
-                          <td width="2%">:</td>
-                          <td><%= student_section %></td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="card ">
-                    <div class="card-header bg-transparent border-0">
-                      <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
-                    </div>
-                    <div class="card-body pt-0">
-                      <table class="table table-bordered">
-                        <tr>
-                          <th width="30%">USN</th>
-                          <td width="2%">:</td>
-                          <td><%= student_usn %></td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Branch</th>
-                          <td width="2%">:</td>
-                          <td><%= student_branch %></td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Date of Birth</th>
-                          <td width="2%">:</td>
-                          <td><%= student_dob %></td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Degree Year </th>
-                          <td width="2%">:</td>
-                          <td>20<%=student_usn.toString().substring(3,5)%> - 20<%=(parseInt(student_usn.toString().substring(3,5))+4).toString()%> </td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Gender</th>
-                          <td width="2%">:</td>
-                          <td><%= student_gender %></td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-             
-
-             
-            </div>
-          </div>
+              </select>
+              <br><br>
+              <button type="submit" class="btn color-green ">UPDATE </button>
+            </form>
         </div>
-        <!-- partial -->
-
       </div>
     </div>
+  </div>
+</div>
+
+<%} %>
+
+<%  if(task===0) { %>
+
+<div class="container-fluid ">
+
+  <div class="rt-container">
+    <!-- Student Profile -->
+
+    <div class="student-profile py-4">
+      <div class="container">
+        <div class="row ">
+          <div class="col-lg-6 col-md-12">
+            <% var studentD, numberdata%>
+            <div class="row subhead">
+              <div class="card">
+                <div class="card-header bg-transparent">
+                  <table class="table table-borderless">
+                    <tr>
+                      <th width="30%">
+                        <h3>Name</h3>
+                      </th>
+                      <td width="2%">
+                        <h3>:</h3>
+                      </td>
+                      <td>
+                        <h3><%= studentD.name %></h3>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="card-body">
+
+                  <table class="table table-bordered">
+                    <tr>
+                      <th width="30%">USN</th>
+                      <td width="2%">:</td>
+                      <td><%= studentD.usn %></td>
+                    </tr>
+                    <tr>
+                      <th width="30%">Semester </th>
+                      <td width="2%">:</td>
+                      <td><%= studentD.sem %></td>
+                    </tr>
+                    <tr>
+                      <th width="30%">Section</th>
+                      <td width="2%">:</td>
+                      <td><%= studentD.section %></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="card ">
+                <div class="card-header bg-transparent border-0">
+                  <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
+                </div>
+                <div class="card-body pt-0">
+                  <table class="table table-bordered">
+                    <tr>
+                      <th width="30%">USN</th>
+                      <td width="2%">:</td>
+                      <td><%= studentD.usn %></td>
+                    </tr>
+                    <tr>
+                      <th width="30%">Branch</th>
+                      <td width="2%">:</td>
+                      <td><%= studentD.b_id %></td>
+                    </tr>
+                    <tr>
+                      <th width="30%">Date of Birth</th>
+                      <td width="2%">:</td>
+                      <td><%= studentD.dob.toString().slice(3,15) %></td>
+                    </tr>
+                    <tr>
+                      <th width="30%">Degree Year </th>
+                      <td width="2%">:</td>
+                      <td>20<%=studentD.usn.toString().substring(3,5)%> -
+                        20<%=(parseInt(studentD.usn.toString().substring(3,5))+4).toString()%> </td>
+                    </tr>
+                    <tr>
+                      <th width="30%">Gender</th>
+                      <td width="2%">:</td>
+                      <td><%= studentD.gender %></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-12 " style="padding-top: 100px;">
+            <div class="container " style="padding-left: 15%; ">
+              <table class="table table-borderless ">
+                <tr class="align-middle subhead">
+                  <td width="50%">
+                    <h3>Upcoming Exams</h3>
+                  </td>
+                  <td width="50%"><button class="btn  circle-button "
+                      style="background-color: #007542;"><%= numberdata[0]%></button></td>
+                </tr>
+                <tr class="align-middle subhead">
+                  <td width="50%">
+                    <h3>Applied Exams</h3>
+                  </td>
+                  <td width="50%"><button class="btn  circle-button "
+                      style="background-color: #1E8C45;"><%= numberdata[1]%></button></td>
+                </tr>
+                <tr class="align-middle subhead">
+                  <td width="50%">
+                    <h3>Job Offers</h3>
+                  </td>
+                  <td width="50%"><button class="btn  circle-button "
+                      style="background-color: #3AA346;"><%= numberdata[2]%></button></td>
+                </tr>
+                <tr class="align-middle subhead">
+                  <td width="50%">
+                    <h3>Applied Jobs</h3>
+                  </td>
+                  <td width="50%"><button class="btn  circle-button "
+                      style="background-color: #58BB43;"><%= numberdata[3]%></button></td>
+                </tr>
+              </table>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <!-- partial -->
+
+
+
   </div>
 
   <%  } %>
 
   <% if(task===1) {%>
-    <%var applied %>
-    <%var results %>
-    <%var companies %>
+  <%var applied %>
+  <%var results %>
+  <%var companies %>
+  <%var create %>
+
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title text-uppercase subhead">UPCOMING EXAMS </h5>
-          
-          <div class="table-responsive">
-            <table class="table ">
-              <thead >
-                <tr>
+            <h4 class="card-title text-uppercase subhead">ELIGIBLE UPCOMING EXAMS </h5>
 
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam ID</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam Name</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Company Name</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Date</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Time</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Apply</th>
-                </tr>
-              </thead>
-            
-              <tbody>
-            
-                <% results.forEach(function (i) { %>
-                 <% if (applied.includes(i.e_id)===false){ %>
+              <div class="table-responsive">
+                <table class="table ">
+                  <thead>
+                    <tr>
+
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam ID</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam Name</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Company Name</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Date</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Time</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Apply</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <% results.forEach(function (i) { %>
+                    <% if (applied.includes(i.e_id)===false){   %>
                     <tr class="align-middle">
                       <td>
                         <h5 class="font-medium mb-0"><%= i.e_id %></h5>
@@ -218,60 +314,64 @@ function tconvert(time){
                       <td>
                         <span class="text-muted"><%= i.ename %></span>
                       <td>
-                        
-                        <span class="text-muted"><%= companies[i.c_id] %></span>
+
+                        <span class="text-muted"><%= companies[create[i.e_id]] %></span>
                       </td>
                       <td>
                         <span class="text-muted"><%= i.date.toString().slice(0,15) %></span>
                       </td>
                       <td>
                         <span class="text-muted"><%=tconvert(i.time.slice(0,7));%></span>
-                      </td>                   
+                      </td>
                       <td>
-                          <form action="/action/applyExam" method="post">
-                            <button type="submit" name="appliedexam" class="btn color-green " value="<%= i.e_id %>">APPLY </button>
-                          </form>                   
-                      </td>                                           
+                        <form action="/action/applyExam" method="post">
+                          <button type="submit" name="appliedexam" class="btn color-green " value="<%= i.e_id %>">APPLY
+                          </button>
+                        </form>
+                      </td>
                     </tr>
-                <%  } %>               
-                <% } ) %>
-              </tbody>
-            </table>
+                    <%  } %>
+                    <% } ) %>
+
+                  </tbody>
+                </table>
+              </div>
           </div>
-        </div>
+
         </div>
       </div>
     </div>
   </div>
   <% }%>
   <% if(task===2) {%>
-    <%var applied %>
-    <%var companies %>
-    <%var results %>
+  <%var applied %>
+  <%var companies %>
+  <%var results %>
+  <%var create %>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title text-uppercase subhead">APPLIED EXAMS </h5>         
-          <div class="table-responsive">
-            <table class="table ">
-              <thead >
-                <tr>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam ID</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam Name</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Company Name</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Date</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Time</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Cancel Application</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Result</th>
-                </tr>
-              </thead>
-            
-              <tbody>
-                <% results.forEach(function (i) { %>
+            <h4 class="card-title text-uppercase subhead">APPLIED EXAMS </h5>
+              <div class="table-responsive">
+                <table class="table ">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam ID</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Exam Name</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Company Name</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Date</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Time</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Cancel Application</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Result</th>
+                    </tr>
+                  </thead>
 
-                 <% if ((i.e_id in applied)){ %>
+                  <tbody>
+                    <% results.forEach(function (i) { %>
+
+                    <% if ((i.e_id in applied)){ %>
                     <tr class="align-middle">
                       <td>
                         <h5 class="font-medium mb-0"><%= i.e_id %></h5>
@@ -279,42 +379,44 @@ function tconvert(time){
                       <td>
                         <span class="text-muted"><%= i.ename %></span>
                       <td>
-                        <span class="text-muted"><%= companies[i.c_id] %></span>
+                        <span class="text-muted"><%= companies[create[i.e_id]] %></span>
                       </td>
                       <td>
                         <span class="text-muted"><%= i.date.toString().slice(0,15) %></span>
                       </td>
                       <td>
                         <span class="text-muted"><%=tconvert(i.time.slice(0,7));%></span>
-                      </td>                      
+                      </td>
                       <td>
                         <% if (applied[i.e_id] === "p" || applied[i.e_id] === "q" || applied[i.e_id] === "nq"){ %>
                         <form action="/action/cancelExam" method="post">
-                        <button type="submit" name="appliedexam" class="btn btn-danger color-red " value="<%= i.e_id %>" disabled>CANCEL</button>
-                      </form>  
+                          <button type="submit" name="appliedexam" class="btn btn-danger color-red "
+                            value="<%= i.e_id %>" disabled>CANCEL</button>
+                        </form>
                       </td>
                       <td>
                         <%if( applied[i.e_id] === "q"){%>
-                          <button class="infobutton color-green">Qualified</button>
+                        <button class="infobutton color-green">Qualified</button>
                         <%}else if ( applied[i.e_id] === "nq"){%>
-                          <button class="infobutton color-red">Not Qualified</button>
-                       <% }else if ( applied[i.e_id] === "p"){%>
-                          <button class="infobutton color-blue">Pending</button>
-                       <% } %>
-                        
-                      <% }else { %>  
+                        <button class="infobutton color-red">Not Qualified</button>
+                        <% }else if ( applied[i.e_id] === "p"){%>
+                        <button class="infobutton color-grey">Pending</button>
+                        <% } %>
+
+                        <% }else { %>
                         <form action="/action/cancelExam" method="post">
-                          <button type="submit" name="appliedexam" class="btn btn-danger color-red " value="<%= i.e_id %>" >CANCEL</button>
-                        </form>  
-                     <% } %>
-                      </td>                                         
+                          <button type="submit" name="appliedexam" class="btn btn-danger color-red "
+                            value="<%= i.e_id %>">CANCEL</button>
+                        </form>
+                        <% } %>
+                      </td>
                     </tr>
-                <%  } %>               
-                <% } ) %>
-              </tbody>
-            </table>
+                    <%  } %>
+                    <% } ) %>
+                  </tbody>
+                </table>
+              </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -322,68 +424,76 @@ function tconvert(time){
   <% }%>
 
   <% if(task===3) {%>
-    <%var applied %>
-    <%var japplied %>
-    <%var results %>
-    <%var companies %>
+  <%var applied %>
+  <%var japplied %>
+  <%var results %>
+  <%var companies %>
+  <%var offers %>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title text-uppercase subhead">JOB OFFERINGS </h5>
-          
-          <div class="table-responsive">
-            <table class="table ">
-              <thead >
-                <tr>
 
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Job ID</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Offering Company</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Role</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Location</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Package</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Apply</th>
-                </tr>
-              </thead>
-            
-              <tbody>
-               
-                <% results.forEach(function (i) { %>
-                 <% if (japplied.includes(i.j_id)===false){ %>
+              <div class="table-responsive">
+                <table class="table ">
+                  <thead>
+                    <tr>
+
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Job ID</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Offering Company</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Role</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Required Exam</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Location</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Package</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Apply</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <% results.forEach(function (i) { %>
+                    <% if (japplied.includes(i.j_id)===false){ %>
                     <tr class="align-middle">
                       <td>
                         <h5 class="font-medium mb-0"><%= i.j_id %></h5>
                       </td>
                       <td>
-                        <span class="text-muted"><%= companies[i.c_id] %></span>
+                        <span class="text-muted"><%= companies[offers[i.j_id]] %></span>
                       <td>
-                        
+
                         <span class="text-muted"><%= i.role %></span>
+                      </td>
+                      <td>
+
+                        <span class="text-muted"><%= i.e_id %></span>
                       </td>
                       <td>
                         <span class="text-muted"><%= i.location %></span>
                       </td>
                       <td>
                         <span class="text-muted"><%=i.package%></span>
-                      </td>                   
+                      </td>
                       <td>
-                          <form action="/action/applyJob" method="post">
-                           <% if(applied[i.e_id] === "q"){ %>
-                              <button type="submit" name="appliedjob" class="btn color-green " value="<%= i.j_id %>">APPLY </button>
+                        <form action="/action/applyJob" method="post">
+                          <% if(applied[i.e_id] === "q"){ %>
+                          <button type="submit" name="appliedjob" class="btn color-green " value="<%= i.j_id %>">APPLY
+                          </button>
                           <%  }else{ %>
-                              <button type="submit" name="appliedjob" class="btn color-green " value="<%= i.e_id %>" disabled>APPLY </button>
+                          <button type="submit" name="appliedjob" class="btn color-green " value="<%= i.e_id %>"
+                            disabled>APPLY </button>
                           <%  } %>
-                            
-                          </form>                   
-                      </td>                                           
+
+                        </form>
+                      </td>
                     </tr>
-                <%  } %>               
-                <% } ) %>
-              </tbody>
-            </table>
+                    <%  } %>
+                    <% } ) %>
+                  </tbody>
+                </table>
+              </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -391,62 +501,79 @@ function tconvert(time){
   <% }%>
 
   <% if(task===4) {%>
-    <%var applied %>
-    <%var japplied %>
-    <%var companies %>
-    <%var results %>
+  <%var applied %>
+  <%var japplied %>
+  <%var companies %>
+  <%var results %>
+  <% var offers %>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title text-uppercase subhead">APPLIED JOBS </h5>         
-          <div class="table-responsive">
-            <table class="table ">
-              <thead >
-                <tr>
-                  
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Job ID</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Offering Company</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Role</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Location</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Package</th>
-                  <th scope="col" class="border-0 text-uppercase font-medium mb-0">Cancel Application</th>
-                </tr>
-              </thead>
-            
-              <tbody>
-                <% results.forEach(function (i) { %>
+            <h4 class="card-title text-uppercase subhead">APPLIED JOBS </h5>
+              <div class="table-responsive">
+                <table class="table ">
+                  <thead>
+                    <tr>
 
-                 <% if (japplied.includes(i.j_id)===true){ %>
-                  <tr class="align-middle">
-                    <td>
-                      <h5 class="font-medium mb-0"><%= i.j_id %></h5>
-                    </td>
-                    <td>
-                      <span class="text-muted"><%= companies[i.c_id] %></span>
-                    <td>
-                      
-                      <span class="text-muted"><%= i.role %></span>
-                    </td>
-                    <td>
-                      <span class="text-muted"><%= i.location %></span>
-                    </td>
-                    <td>
-                      <span class="text-muted"><%=i.package%></span>
-                    </td>                   
-                    <td>
-                      <form action="/action/cancelJob" method="post">
-                        <button type="submit" name="appliedjob" class="btn btn-danger color-red " value="<%= i.j_id %>">CANCEL</button>
-                      </form>                  
-                    </td>                                           
-                  </tr>
-                <%  } %>               
-                <% } ) %>
-              </tbody>
-            </table>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Job ID</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Offering Company</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Role</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Location</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Package</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Cancel Application</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium mb-0">Status</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <% results.forEach(function (i) { %>
+
+                    <% if (i.j_id in japplied){ %>
+                    <tr class="align-middle">
+                      <td>
+                        <h5 class="font-medium mb-0"><%= i.j_id %></h5>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%= companies[offers[i.j_id]] %></span>
+                      <td>
+
+                        <span class="text-muted"><%= i.role %></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%= i.location %></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"><%=i.package%></span>
+                      </td>
+                      <td>
+                        <% if ( japplied[i.j_id] === 'Accepted' || japplied[i.j_id] === 'Rejected') { %>
+                        <form action="/action/cancelJob" method="post">
+                          <button type="submit" name="appliedjob" class="btn btn-danger color-red "
+                            value="<%= i.j_id %>" disabled>CANCEL</button>
+                        </form>
+                      </td>
+                      <td>
+                        <% if (japplied[i.j_id] === 'Accepted'){ %>
+                        <button class="infobutton color-green">Accepted</button>
+                        <%  }else if (japplied[i.j_id] === 'Rejected'){ %>
+                        <button class="infobutton color-red">Rejected</button>
+                        <%  }  }else {%>
+                        <form action="/action/cancelJob" method="post">
+                          <button type="submit" name="appliedjob" class="btn btn-danger color-red "
+                            value="<%= i.j_id %>">CANCEL</button>
+                        </form>
+                        <% } %>
+
+                      </td>
+                    </tr>
+                    <%  } %>
+                    <% } ) %>
+                  </tbody>
+                </table>
+              </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -461,19 +588,19 @@ function tconvert(time){
 
     <%var rexists%>
     <% if(rexists === true){ %>
-      <div class="container-fluid">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <h1 class="font-mb subhead" style="font-size: 2rem; color: red">Resume already exits</h1>
-            </div>
-            <div class="row">
-              <a class="btn color-green  margin-tb subhead" style="width: 50%;" href="/action/viewresume"
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <h1 class="font-mb subhead" style="font-size: 2rem; color: red">Resume already exits</h1>
+          </div>
+          <div class="row">
+            <a class="btn color-green  margin-tb subhead" style="width: 50%;" href="/action/viewresume"
               role="button"><span class="font-ml" style="font-size: 1.5rem;">View Resume</span></a>
-            </div>         
           </div>
         </div>
       </div>
+    </div>
     <%}%>
       
     <%if(task === 201){%>
@@ -511,103 +638,108 @@ function tconvert(time){
 
     <%}%>
     <%  if (task===202) { %>
-<div class="container-fluid color-grey">
-    <div class="card">
-      <div class="card-body">
-        <h1 class="font-mb subhead">Resume </h1><hr><br>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <%var fields = {
+    <div class="container-fluid color-grey">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="font-mb subhead">Resume </h1>
+          <hr><br>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <%var fields = {
               name: 'Name', usn: 'USN', sem: 'Semester', section:'Section', dob:'Date of Birth', 
               gender: 'Gender', deg: 'Degree/Program', fos:  'Field of Study', cgpa: 'CGPA', rel: 'Relevent Courses',
               hon: 'Awards/Honors', exact: 'ExtraCurricular Activites', skill:  'Additional skills', hob: 'Hobbies',
               comp: 'Company Name', job: 'Job Title', wdays: 'Number of working days', ptitle: 'Project Titles', ref: 'References'
             }%>
-            <% var i =0 %>
-            <% for (let [key, value] of Object.entries(fields)){ %>
-            <div class="row">
-             <% if(i==14){%>
+              <% var i =0 %>
+              <% for (let [key, value] of Object.entries(fields)){ %>
+              <div class="row">
+                <% if(i==14){%>
                 <h2 class="subhead">Work Experience / Internship</h2>
-             <% }
+                <% }
               if(i==17){%>
                 <h2 class="subhead">Projects</h2>
-            <%  }
+                <%  }
               if(i==18){%>
                 <h2 class="subhead">References</h2>
-           <%  } 
+                <%  } 
            if (i==0){%>
-            <h2 class="subhead">General Info</h2>
-         <%  } %>
-              <div class="col-lg-6"><span class="font-ml" style="font-size: 1.3rem;"><%=fields[key] %> </span></div>
-             <% if (i===4){ %>
+                <h2 class="subhead">General Info</h2>
+                <%  } %>
+                <div class="col-lg-6"><span class="font-ml" style="font-size: 1.3rem;"><%=fields[key] %> </span></div>
+                <% if (i===4){ %>
                 <div class="col-lg-6"><span class="font-ml"><%=userData[key].toString().slice(3,15)%></span></div>
-             <% }else{ %>
-                <div class="col-lg-6"><span class="font-ml"><%=userData[key]%></span></div>          
-              <% } i = i+1%>
-            </div>
-            <hr>
-            <% }%>
-          </li>
-        </ul>
+                <% }else{ %>
+                <div class="col-lg-6"><span class="font-ml"><%=userData[key]%></span></div>
+                <% } i = i+1%>
+              </div>
+              <hr>
+              <% }%>
+            </li>
+          </ul>
+          <div class="row subhead">
+            <a class="btn color-green  margin-tb" style="width: 40%;" href="/action/editresume" role="button"><span
+                class="font-mb" style="font-size: 1.5rem;">Edit Resume</span></a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
     <%  }%>
 
   </div>
 </div>
 <div class="container-fluid">
-<div class="row">
-  <div class="col-lg-6 col-md-12">
+  <div class="row">
+    <div class="col-lg-6 col-md-12">
 
-    <%if(task === 203){%>
-    <% var userData %>
-    <div class="card">
-      <div class="card-body">
-        <p class="font-mb subhead" style="font-size: 2rem">Edit Resume</p><hr>
-        <form action="/action/edit_resume" method="post">
-          <p class="par text-arsenic" style="font-size: 1.5rem">General Info</p>
-          <input type="text" class="form-control margin-tb" name="degree_program"
-            placeholder="Enter Degree/Program(BE/BTec/PhD/..)" value="<%=userData[0].deg%>">
-          <input type="text" class="form-control margin-tb" name="fieldofstudy"
-            placeholder="Enter Field of Study(CSE/IS/..)" value="<%=userData[0].fos%>">
-          <input type="double" class="form-control margin-tb" name="cgpa" placeholder="CGPA"
-            value="<%=userData[0].cgpa%>">
-          <input type="text" class="form-control margin-tb" name="rel" placeholder="Relevent Courses"
-            value="<%=userData[0].rel%>">
-          <input type="text" class="form-control margin-tb" name="honor"
-            placeholder="Award/Honours(BE Honours/BTEC Honours)" value="<%=userData[0].hon%>">
-          <input type="text" class="form-control margin-tb" name="activity"
-            placeholder="Extracurricular Activity(NSS/NCC/..)" value="<%=userData[0].exact%>">
-          <input type="text" class="form-control margin-tb" name="skill" placeholder="Additional Skills"
-            value="<%=userData[0].skill%>">
-          <input type="text" class="form-control margin-tb" name="hobbies" placeholder="Hobbies"
-            value="<%=userData[0].hob%>"><br><br>
-          <p class="par text-arsenic" style="font-size: 1.5rem">Work Experiance/Internship</p>
-          <input type="text" class="form-control margin-tb" name="addcompany" placeholder="Add Company"
-            value="<%=userData[0].comp%>">
-          <input type="text" class="form-control margin-tb" name="job" placeholder="Add Job Title"
-            value="<%=userData[0].job%>">
-          <input type="int" class="form-control margin-tb" name="workdays" placeholder="Number of Working Days"
-            value="<%=userData[0].wdays%>"><br><br>
-          <p class="par text-arsenic" style="font-size: 1.5rem">Project Details</p>
-          <input type="text" class="form-control margin-tb" name="ptitle" placeholder="Project Titles"
-            value="<%=userData[0].ptitle%>"><br><br>
-          <p class="par text-arsenic" style="font-size: 1.5rem">References</p>
-          <input type="text" class="form-control margin-tb" name="references" placeholder="Refernces"
-            value="<%=userData[0].ref%>">
-          <br><br>
-          <button type="submit" class="btn color-green margin-tb" value="0"><span
-              class="font-ml">Edit</span></button>
+      <%if(task === 203){%>
+      <% var userData %>
+      <div class="card">
+        <div class="card-body">
+          <p class="font-mb subhead" style="font-size: 2rem">Edit Resume</p>
+          <hr>
+          <form action="/action/edit_resume" method="post">
+            <p class="par text-arsenic" style="font-size: 1.5rem">General Info</p>
+            <input type="text" class="form-control margin-tb" name="degree_program"
+              placeholder="Enter Degree/Program(BE/BTec/PhD/..)" value="<%=userData[0].deg%>">
+            <input type="text" class="form-control margin-tb" name="fieldofstudy"
+              placeholder="Enter Field of Study(CSE/IS/..)" value="<%=userData[0].fos%>">
+            <input type="double" class="form-control margin-tb" name="cgpa" placeholder="CGPA"
+              value="<%=userData[0].cgpa%>">
+            <input type="text" class="form-control margin-tb" name="rel" placeholder="Relevent Courses"
+              value="<%=userData[0].rel%>">
+            <input type="text" class="form-control margin-tb" name="honor"
+              placeholder="Award/Honours(BE Honours/BTEC Honours)" value="<%=userData[0].hon%>">
+            <input type="text" class="form-control margin-tb" name="activity"
+              placeholder="Extracurricular Activity(NSS/NCC/..)" value="<%=userData[0].exact%>">
+            <input type="text" class="form-control margin-tb" name="skill" placeholder="Additional Skills"
+              value="<%=userData[0].skill%>">
+            <input type="text" class="form-control margin-tb" name="hobbies" placeholder="Hobbies"
+              value="<%=userData[0].hob%>"><br><br>
+            <p class="par text-arsenic" style="font-size: 1.5rem">Work Experiance/Internship</p>
+            <input type="text" class="form-control margin-tb" name="addcompany" placeholder="Add Company"
+              value="<%=userData[0].comp%>">
+            <input type="text" class="form-control margin-tb" name="job" placeholder="Add Job Title"
+              value="<%=userData[0].job%>">
+            <input type="int" class="form-control margin-tb" name="workdays" placeholder="Number of Working Days"
+              value="<%=userData[0].wdays%>"><br><br>
+            <p class="par text-arsenic" style="font-size: 1.5rem">Project Details</p>
+            <input type="text" class="form-control margin-tb" name="ptitle" placeholder="Project Titles"
+              value="<%=userData[0].ptitle%>"><br><br>
+            <p class="par text-arsenic" style="font-size: 1.5rem">References</p>
+            <input type="text" class="form-control margin-tb" name="references" placeholder="Refernces"
+              value="<%=userData[0].ref%>">
+            <br><br>
+            <button type="submit" class="btn color-green margin-tb" value="0"><span class="font-ml">Edit</span></button>
 
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
-</div>
 
-    <%}%>
+<%}%>
 
 
     <%- include('partials/footer'); -%>

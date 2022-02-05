@@ -63,27 +63,27 @@ app.get("/company_loginf", function (req, res) {
   });
 });
 
-app.get("/companyPassCheck", (req, res) =>{
-  if(req.isAuthenticated()){
- 
-    if(req.user[0].password===req.user[0].c_id){
+app.get("/companyPassCheck", (req, res) => {
+  if (req.isAuthenticated()) {
+
+    if (req.user[0].password === req.user[0].c_id) {
       res.redirect("/companyPassChange");
-    }else{
+    } else {
       res.redirect("/company");
     }
-  }else{
+  } else {
     res.redirect("/company_login");
-   }
+  }
 });
 
-app.get("/companyPassChange", (req, res)=>{
-  if(req.isAuthenticated()){
+app.get("/companyPassChange", (req, res) => {
+  if (req.isAuthenticated()) {
     res.render("company", {
       pageTitle: 'Company: Change Password',
       task: 101,
       passCheck: false
     });
-  }else{
+  } else {
     res.redirect("/company_login");
   }
 });
@@ -100,20 +100,10 @@ app.get("/admin", function (req, res) {
 });
 
 
-app.get("/student", function(req, res) {
+app.get("/student", function (req, res) {
   if (req.isAuthenticated()) {
-    
-    res.render("student", {
-      pageTitle: 'Student',
-      student_name: req.user[0].name,
-      student_usn:req.user[0].usn,
-      student_sem:req.user[0].sem,
-      student_gender:req.user[0].gender,
-      student_section:req.user[0].section,
-      student_dob : req.user[0].dob,
-      student_branch : req.user[0].b_id,
-      task:0,
-    });
+    res.redirect("/action/studenthome");
+
   } else {
     res.redirect("/student_login");
   }
@@ -123,9 +113,7 @@ app.get("/student", function(req, res) {
 
 app.get("/company", function (req, res) {
   if (req.isAuthenticated()) {
-    res.render("company", {
-      pageTitle: 'Company'
-    });
+    res.redirect("/action/companyhome");
   } else {
     res.redirect("/company_login");
   }
@@ -155,52 +143,50 @@ app.get("/addcompany", (req, res) => {
 
 });
 
-app.get("/addbranch", (req, res)=>{
-  if(req.isAuthenticated()){
+app.get("/addbranch", (req, res) => {
+  if (req.isAuthenticated()) {
     res.render("admin", {
       pageTitle: 'Admin',
       task: 4
     });
-  }else{
+  } else {
     res.redirect("/admin_login");
   }
 })
 
 //COMPANY
 
-app.get("/addjob",function(req,res){
+app.get("/addjob", function (req, res) {
   if (req.isAuthenticated()) {
-  res.redirect("/action/company/addjob");
-}
-  else{
+    res.redirect("/action/company/addjob");
+  } else {
     res.redirect("/company_login");
   }
 });
 
-app.get("/addexam",function(req,res){
+app.get("/addexam", function (req, res) {
   if (req.isAuthenticated()) {
-  res.render('company',{
-    pageTitle:"Company",
-    task:2
-  });}
-  else{
+    res.render('company', {
+      pageTitle: "Company",
+      task: 2
+    });
+  } else {
     res.redirect("/company_login");
   }
 });
 
 
-app.get("/cupdate",function(req,res){
+app.get("/cupdate", function (req, res) {
   if (req.isAuthenticated()) {
-   
-  res.render('company',{
-    pageTitle:"Company",
-    task:4,
-    cname:req.user[0].name,
-    ctype:req.user[0].type,
-    cdesc:req.user[0].description
-  });
-}
-  else{
+
+    res.render('company', {
+      pageTitle: "Company",
+      task: 4,
+      cname: req.user[0].name,
+      ctype: req.user[0].type,
+      cdesc: req.user[0].description
+    });
+  } else {
     res.redirect("/company_login");
   }
 });
@@ -211,7 +197,7 @@ app.get("/buildresume", (req, res) => {
   if (req.isAuthenticated()) {
     res.render("student", {
       pageTitle: 'Student',
-      task: 201 ,
+      task: 201,
       rexists: false
     });
   } else {
@@ -219,6 +205,8 @@ app.get("/buildresume", (req, res) => {
   }
 
 });
+
+
 
 
 app.get("/logout", function (req, res) {

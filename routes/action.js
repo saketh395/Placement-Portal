@@ -46,11 +46,11 @@ app.get("/adminhome", (req, res) => {
     });
 });
 
-app.get("/admin/addstudent", (req, res)=>{
-  if(req.isAuthenticated()){
-    connection.query('SELECT b_id from branches', function(err, results){
+app.get("/admin/addstudent", (req, res) => {
+  if (req.isAuthenticated()) {
+    connection.query('SELECT b_id from branches', function (err, results) {
       var branches = [];
-      results.forEach((i)=>{
+      results.forEach((i) => {
         branches.push(i.b_id);
       })
       res.render("admin", {
@@ -59,8 +59,7 @@ app.get("/admin/addstudent", (req, res)=>{
         branches: branches
       })
     });
-  }
-  else{
+  } else {
     res.redirect("/admin_login");
   }
 });
@@ -68,11 +67,11 @@ app.get("/admin/addstudent", (req, res)=>{
 app.post("/addstudent", (req, res) => {
   const usn = req.body.usn;
   const dob = req.body.dob;
-  
+
   const branch = req.body.branch;
-  
+
   if (usn.length === 0 || dob.length === 0) {
-    console.log("null values");
+    
     res.redirect("/addstudent");
   } else {
     connection.query('INSERT INTO student(usn, dob, b_id) VALUES (?, ?, ?)', [usn, dob, branch], function (err) {
@@ -87,7 +86,7 @@ app.post("/addstudent", (req, res) => {
 
 app.get("/viewstudent", (req, res) => {
   if (req.isAuthenticated()) {
-    connection.query('SELECT * FROM student ORDER BY b_id, usn', function (err, user, fields) {
+    connection.query('SELECT * FROM student ORDER BY usn; ', function (err, user, fields) {
       if (!err) {
         if (user) {
           res.render("admin", {
@@ -125,14 +124,14 @@ app.post("/addcompany", (req, res) => {
       if (!err) {
         if (count) {
           const c_id = "c" + count[1][0].ccounter.toString();
-          connection.query('INSERT INTO company (c_id, username,password,  name, type) VALUES (?, ?,?, ?, ?)', [c_id, c_id,c_id, name, type], function (err) {
+          connection.query('INSERT INTO company (c_id, username,password,  name, type) VALUES (?, ?,?, ?, ?)', [c_id, c_id, c_id, name, type], function (err) {
             if (err) {
               console.log(err);
             } else {
               res.redirect("/addcompany");
             }
           });
-        }else{
+        } else {
           res.redirect("/addcompany");
         }
 
@@ -173,28 +172,88 @@ app.post("/deleteCompany", (req, res) => {
   }
 });
 
-app.post("/addbranch", (req, res)=>{
+app.post("/addbranch", (req, res) => {
+  if (req.isAuthenticated()) {
+    const bid = req.body.bid;
+    const bname = req.body.bname;
+    connection.query('INSERT INTO branches (b_id, b_name) VALUES (?, ?)', [bid, bname], (err, results) => {
+      if (!err) {
+        if (results) {
+          res.redirect("/addbranch");
+        }
+      } else {
+        res.send(err);
+      }
+    });
+  } else {
+    res.redirect("/admin_login");
+  }
+});
+
+
+app.get("/viewbranches", (req, res) => {
   if(req.isAuthenticated()){
-    const bid= req.body.bid;
-    const bname= req.body.bname;
-    connection.query('INSERT INTO branches (b_id, b_name) VALUES (?, ?)', [bid, bname], (err, results)=>{
+    connection.query('SELECT * FROM branches', (err, results)=>{
       if(!err){
         if(results){
-          res.redirect("/addbranch");
+          res.render("admin", {
+            pageTitle:'Admin',
+            results: results,
+            task: 5,
+          });
         }
       }else{
         res.send(err);
       }
     });
+
   }else{
     res.redirect("/admin_login");
   }
-})
+});
+
+app.post("/deleteBranch", (req, res) => {
+  if(req.isAuthenticated()){
+    const b_id = req.body.delI;
+    connection.query('DELETE FROM branches WHERE b_id=?', [b_id], (err, results)=>{
+      if(!err){
+        res.redirect("/action/viewbranches");
+      }
+    });
+  }else{
+    res.redirect("/admin_login");
+  }
+});
 
 
 
 
 // ---------------------------------------COMPANY FUNCTIONS-----------------------------------------------------
+
+app.get("/companyhome", (req, res) => {
+  if (req.isAuthenticated()) {
+    const c_id = req.user[0].c_id;
+    connection.query('SELECT * FROM company WHERE c_id=?; SELECT COUNT(*) as ct FROM creates WHERE c_id=?; SELECT COUNT(*) as ct FROM offers WHERE c_id=?', [c_id, c_id, c_id], (err, results) => {
+      if (!err) {
+        if (results) {
+          var numberdata = [];
+          for (let i = 1; i < results.length; i++) {
+            numberdata.push(results[i][0].ct);
+          }
+          res.render("company", {
+            pageTitle: "Company",
+            task: 110,
+            cdata: results[0][0],
+            numberdata: numberdata
+          });
+        }
+      }
+    });
+
+  } else {
+    res.redirect("/company_login");
+  }
+});
 
 app.post("/companyPC", (req, res) => {
   if (req.isAuthenticated()) {
@@ -230,28 +289,28 @@ app.post("/companyPC", (req, res) => {
   }
 });
 
-app.get("/company/addjob", (req, res)=>{
-  if(req.isAuthenticated()){
+app.get("/company/addjob", (req, res) => {
+  if (req.isAuthenticated()) {
     const c_id = req.user[0].c_id;
-    connection.query("SELECT e_id FROM creates WHERE c_id = ?", [c_id], function(err, results){
-       if(!err){
-         if(results){
-           res.render('company',{
-             pageTitle:"Company",
-             task:0,
-             exams: results,
-           });
-         }
-       }else{
-         res.send(err);
-       }
+    connection.query("SELECT e_id FROM creates WHERE c_id = ?", [c_id], function (err, results) {
+      if (!err) {
+        if (results) {
+          res.render('company', {
+            pageTitle: "Company",
+            task: 0,
+            exams: results,
+          });
+        }
+      } else {
+        res.send(err);
+      }
     });
- 
-  }else{
+
+  } else {
     res.redirect("/company_login");
   }
- 
- 
+
+
 });
 
 app.post("/addjob", (req, res) => {
@@ -264,18 +323,18 @@ app.post("/addjob", (req, res) => {
     console.log("null values");
     res.redirect("/company");
   } else {
-    connection.query('UPDATE counter SET jcounter = jcounter+1; SELECT jcounter FROM counter; ', function(err, count){
-      if(!err){
-        if(count){
-          const j_id = c_id.toString()+"-j"+count[1][0].jcounter.toString();
-          connection.query('INSERT INTO jobs (j_id, role, location, package, e_id,c_id) VALUES (?,?,?,?,?,?); INSERT INTO offers VALUES (?,?); ', [j_id,role, location, package, e_id,c_id, c_id, j_id], 
-          function(err, results){
-              if(err){
+    connection.query('UPDATE counter SET jcounter = jcounter+1; SELECT jcounter FROM counter; ', function (err, count) {
+      if (!err) {
+        if (count) {
+          const j_id = c_id.toString() + "-j" + count[1][0].jcounter.toString();
+          connection.query('INSERT INTO jobs (j_id, role, location, package, e_id) VALUES (?,?,?,?,?); INSERT INTO offers VALUES (?,?); ', [j_id, role, location, package, e_id, c_id, j_id],
+            function (err, results) {
+              if (err) {
                 res.send(err);
-              }else{
+              } else {
                 res.redirect("/action/company/addjob");
               }
-          });
+            });
         }
       }
     });
@@ -292,18 +351,18 @@ app.post("/addexam", (req, res) => {
     console.log("null values");
     res.redirect("/company");
   } else {
-    connection.query('UPDATE counter SET ecounter = ecounter+1; SELECT ecounter FROM counter; ', function(err, count){
-      if(!err){
-        if(count){
-          const e_id = c_id.toString()+"-e"+count[1][0].ecounter.toString();
-          connection.query('INSERT INTO exam (e_id, ename, date, time, c_id) VALUES (?,?,?,?,?); INSERT INTO creates VALUES (?, ?)', [e_id, ename, edate, etime, c_id, c_id, e_id], 
-          function(err, results){
-            if(!err){
-              res.redirect("/addexam")
-            }else{
-              res.send(err);
-            }
-          });
+    connection.query('UPDATE counter SET ecounter = ecounter+1; SELECT ecounter FROM counter; ', function (err, count) {
+      if (!err) {
+        if (count) {
+          const e_id = c_id.toString() + "-e" + count[1][0].ecounter.toString();
+          connection.query('INSERT INTO exam (e_id, ename, date, time) VALUES (?,?,?,?); INSERT INTO creates VALUES (?, ?)', [e_id, ename, edate, etime, c_id, e_id],
+            function (err, results) {
+              if (!err) {
+                res.redirect("/addexam")
+              } else {
+                res.send(err);
+              }
+            });
         }
       }
     });
@@ -319,7 +378,7 @@ app.get("/viewjobs", function (req, res) {
     connection.query("select jobs.j_id,jobs.role,jobs.location,jobs.package from offers,jobs where offers.j_id = jobs.j_id AND offers.c_id=?", [cid], function (err, job, fields) {
       if (!err)
         if (job) {
-          console.log(job);
+          
           res.render("company", {
             pageTitle: "Company",
             task: 1,
@@ -353,7 +412,7 @@ app.get("/viewexams", function (req, res) {
 app.post("/deletejob", (req, res) => {
   if (req.isAuthenticated()) {
     const delI = req.body.delI;
-    console.log(delI);
+   
     connection.query('DELETE FROM jobs WHERE j_id = ?; DELETE FROM offers WHERE j_id=?', [delI, delI], (err) => {
       if (!err) {
         res.redirect("/action/viewjobs");
@@ -367,7 +426,6 @@ app.post("/deletejob", (req, res) => {
 app.post("/deleteexam", (req, res) => {
   if (req.isAuthenticated()) {
     const delI = req.body.delI;
-    console.log(delI);
     connection.query('DELETE FROM exam WHERE e_id = ?; DELETE FROM offers WHERE e_id=?', [delI, delI], (err) => {
       if (!err) {
         res.redirect("/action/viewexams");
@@ -377,124 +435,116 @@ app.post("/deleteexam", (req, res) => {
     });
   }
 });
- ///////here/////
 
-app.post("/viewestudents",function(req,res){
-  if(req.isAuthenticated()){
+app.post("/viewestudents", function (req, res) {
+  if (req.isAuthenticated()) {
     const delI = req.body.delI;
-    connection.query("select attempts.e_id,student.usn,student.name,attempts.status from student,attempts where student.usn = attempts.usn AND attempts.e_id=?",[delI],function(err,estud,fields){
-      if(!err)
-      if(estud){
-        res.render("company",{
-          pageTitle:"Company",
-          task:5,
-        estudData : estud,
-        });
-      }
+    connection.query("select attempts.e_id,student.usn,student.name,attempts.status from student,attempts where student.usn = attempts.usn AND attempts.e_id=?", [delI], function (err, estud, fields) {
+      if (!err)
+        if (estud) {
+          res.render("company", {
+            pageTitle: "Company",
+            task: 5,
+            estudData: estud,
+          });
+        }
     });
-  }
-    else
+  } else
     res.redirect("/company_login");
-      
- });
 
- app.post("/viewjstudents",function(req,res){
-  if(req.isAuthenticated()){
+});
+
+app.post("/viewjstudents", function (req, res) {
+  if (req.isAuthenticated()) {
     const delI = req.body.delI;
-    
-    connection.query("SELECT applies.j_id, applies.usn, student.name, applies.status FROM applies, student where applies.usn= student.usn AND applies.j_id=?",[delI],function(err,jstud,fields){
-      if(!err)
-     
-      if(jstud){
-        res.render("company",{
-          pageTitle:"Company",
-          task:6,
-        jstudData : jstud,
-        });
-      }
+
+    connection.query("SELECT applies.j_id, applies.usn, student.name, applies.status FROM applies, student where applies.usn= student.usn AND applies.j_id=?", [delI], function (err, jstud, fields) {
+      if (!err)
+
+        if (jstud) {
+          res.render("company", {
+            pageTitle: "Company",
+            task: 6,
+            jstudData: jstud,
+          });
+        }
     });
-  }
-    else
+  } else
     res.redirect("/company_login");
-      
- });
 
- app.post("/updateestatus", (req,res)=>{
-  if(req.isAuthenticated())
-    {
-      const status=req.body.status;
-      console.log(status)
-      const usn = req.body.usn;
-      const e_id = req.body.delI;
-      connection.query("update attempts set status=? where e_id=? and usn=?",[status,e_id,usn],function(err){
-          if(err)
-          console.log(err);
-          else
-          res.redirect("/action/viewexams");
-      });
-    }
-    else
+});
+
+app.post("/updateestatus", (req, res) => {
+  if (req.isAuthenticated()) {
+    const status = req.body.status;
+   
+    const usn = req.body.usn;
+    const e_id = req.body.delI;
+    connection.query("update attempts set status=? where e_id=? and usn=?", [status, e_id, usn], function (err) {
+      if (err)
+        console.log(err);
+      else
+        res.redirect("/action/viewexams");
+    });
+  } else
     res.redirect("/company_login");
-  
-  });
 
-app.post("/updatejstatus", (req,res)=>{
-  if(req.isAuthenticated())
-    {
-      const status=req.body.jstatus;
-      const usn = req.body.usn;
-      const j_id = req.body.delI;
-      connection.query("update applies set status=? where j_id=? and usn=?",[status,j_id,usn],function(err){
-          if(err)
-          console.log(err);
-          else
-          res.redirect("/action/viewjobs");
-      });
-    }
-    else
+});
+
+app.post("/updatejstatus", (req, res) => {
+  if (req.isAuthenticated()) {
+    const status = req.body.jstatus;
+    const usn = req.body.usn;
+    const j_id = req.body.delI;
+    connection.query("update applies set status=? where j_id=? and usn=?", [status, j_id, usn], function (err) {
+      if (err)
+        console.log(err);
+      else
+        res.redirect("/action/viewjobs");
+    });
+  } else
     res.redirect("/company_login");
-  
-  });
 
-app.post('/cupdate',function(req,res){
+});
+
+app.post('/cupdate', function (req, res) {
   const cname = req.body.cname;
-  const ctype =req.body.ctype;
-  const cdesc=req.body.cdesc;
-  if(req.isAuthenticated())
-  { const cid=req.user[0].c_id;
-     connection.query("update company set name=?,type=?,description=? where c_id=? ",[cname,ctype,cdesc,cid],function(err){
-       if(err)
-       console.log(err);
-       else
-       res.redirect('/company');
-     })
-  }
-  else
-  {
+  const ctype = req.body.ctype;
+  const cdesc = req.body.cdesc;
+
+  if (req.isAuthenticated()) {
+    const cid = req.user[0].c_id;
+    connection.query("update company set name=?,type=?,description=? where c_id=? ", [cname, ctype, cdesc, cid], function (err) {
+      if (err)
+        console.log(err);
+      else
+        res.redirect('/company');
+    })
+  } else {
     res.redirect("/company_login");
   }
 
 });
-//view resume in company portal
+
 app.post("/cviewresume", (req, res) => {
   if (req.isAuthenticated()) {
     const usn = req.body.delI;
     connection.query('SELECT * FROM resume WHERE usn = ?; SELECT * FROM student WHERE usn = ?', [usn, usn], function (err, user, fields) {
       if (!err) {
-        console.log(user[0][0]);
-          var final = {
-            ...user[0][0],
-            ...user[1][0]
-          };
-          console.log(final)
+    
+        var final = {
+          ...user[0][0],
+          ...user[1][0]
+        };
+       
 
-          res.render("company", {
-            pageTitle: 'Company',
-            task: 102,
-            rexists: false,
-            userData: final,
-          });
-        
+        res.render("company", {
+          pageTitle: 'Company',
+          task: 102,
+          rexists: false,
+          userData: final,
+        });
+
       }
     });
   } else {
@@ -502,35 +552,112 @@ app.post("/cviewresume", (req, res) => {
   }
 });
 
-
 //--------------------------------------------------STUDENT FUNCTIONS-----------------------------------------------------
 
+
+app.get("/studenthome", function (req, res) {
+  if (req.isAuthenticated()) {
+    const usn = req.user[0].usn;
+    connection.query('SELECT * FROM student WHERE usn =?; SELECT COUNT(*) as ct FROM creates; SELECT COUNT(*) as ct FROM attempts where usn= ?;SELECT COUNT(*) as ct FROM offers ; SELECT COUNT(*) as ct FROM applies WHERE usn=?', [usn, usn, usn], function (err, user) {
+      if (!err) {
+        if (user) {
+
+          var studentD = user[0][0];
+          var numberdata = [];
+          for (let i = 1; i < user.length; i++) {
+            numberdata.push(user[i][0].ct);
+          }
+
+          res.render("student", {
+            pageTitle: 'Student',
+            studentD: studentD,
+            numberdata: numberdata,
+            task: 0,
+          });
+        }
+      } else {
+        res.send(err);
+      }
+    });
+  } else {
+    res.redirect("/student_login");
+  }
+});
+
+app.get("/get_student_update", (req, res) => {
+  if (req.isAuthenticated()) {
+    const usn = req.user[0].usn;
+    connection.query('SELECT * FROM student WHERE usn=?', [usn], function (err, results) {
+      if (!err) {
+        if (results) {
+
+          res.render("student", {
+            pageTitle: "Student: Update details",
+            task: 301,
+            user: results
+          })
+        } else {
+          res.redirect("/student")
+        }
+      } else {
+        res.send(err)
+      }
+    })
+
+  } else {
+    req.redirect("/student_login");
+  }
+})
+
+app.post("/student_update", (req, res) => {
+  if (req.isAuthenticated()) {
+    const usn = req.user[0].usn;
+    const name = req.body.name;
+    const section = req.body.section;
+    const sem = req.body.sem;
+    const gender = req.body.gender;
+    connection.query('UPDATE student SET name=?, sem=?, section=?, gender=? WHERE usn=?', [name, sem, section, gender, usn], function (err, results) {
+      if (!err) {
+        res.redirect("/student");
+      } else {
+        res.send(err);
+      }
+    })
+  } else {
+    res.redirect("/student_login")
+  }
+});
 
 //exams
 app.get("/student/viewexam", (req, res) => {
   if (req.isAuthenticated()) {
     const usn = req.user[0].usn;
-    connection.query('select * FROM exam GROUP BY date; select e_id from attempts where usn = ?; SELECT c_id, name FROM company ', [usn], function (err, results, fields) {
+    connection.query('select * FROM exam GROUP BY date; select e_id from attempts where usn = ?; SELECT c_id, name FROM company; SELECT * FROM creates; ', [usn], function (err, results, fields) {
       if (!err) {
         if (results) {
           var companies = {};
-          results[2].forEach((i)=>{
+          results[2].forEach((i) => {
             companies[i.c_id] = i.name
-            
+
           });
-          
+
           var applied = [];
           results[1].forEach((i) => {
             applied.push(i.e_id);
           });
 
+          var create = {}
+          results[3].forEach((i) => {
+            create[i.e_id] = i.c_id;
+          })
 
           res.render("student", {
             pageTitle: 'Student',
             task: 1,
             results: results[0],
             applied: applied,
-            companies: companies
+            companies: companies,
+            create: create,
           });
 
 
@@ -544,27 +671,32 @@ app.get("/student/viewexam", (req, res) => {
 app.get("/student/appliedexams", (req, res) => {
   if (req.isAuthenticated()) {
     const usn = req.user[0].usn;
-    connection.query('select * from exam GROUP BY date;  select e_id, status from attempts where usn = ? ; SELECT c_id, name FROM company', [usn], function (err, results, fields) {
+    connection.query('select * from exam GROUP BY date;  select e_id, status from attempts where usn = ? ; SELECT c_id, name FROM company;  SELECT * FROM creates;', [usn], function (err, results, fields) {
       if (!err) {
         if (results) {
           var companies = {};
-          results[2].forEach((i)=>{
+          results[2].forEach((i) => {
             companies[i.c_id] = i.name
-            
-          });
-          
-          var applied = {};
-          results[1].forEach((i)=>{
-            applied[i.e_id]=i.status
-          }) 
 
-          
+          });
+
+          var applied = {};
+          results[1].forEach((i) => {
+            applied[i.e_id] = i.status
+          })
+
+          var create = {}
+          results[3].forEach((i) => {
+            create[i.e_id] = i.c_id;
+          })
+
           res.render("student", {
             pageTitle: 'Student',
             task: 2,
             results: results[0],
             applied: applied,
-            companies: companies
+            companies: companies,
+            create: create
           });
         }
       }
@@ -576,83 +708,97 @@ app.get("/student/appliedexams", (req, res) => {
 
 //jobs
 
-app.get("/student/viewjobs", (req, res)=>{
-  if(req.isAuthenticated()){
+app.get("/student/viewjobs", (req, res) => {
+  if (req.isAuthenticated()) {
     const usn = req.user[0].usn;
-    connection.query('SELECT * FROM jobs; SELECT e_id, status FROM attempts WHERE usn = ?; SELECT c_id, name FROM company; SELECT j_id from applies WHERE usn =? ', [usn, usn], (err, results)=>{
-      if(!err){
-        if(results){
-          
+    connection.query('SELECT * FROM jobs; SELECT e_id, status FROM attempts WHERE usn = ?; SELECT c_id, name FROM company; SELECT j_id from applies WHERE usn =?; SELECT * FROM offers ', [usn, usn], (err, results) => {
+      if (!err) {
+        if (results) {
+
           var companies = {};
-          results[2].forEach((i)=>{
+          results[2].forEach((i) => {
             companies[i.c_id] = i.name
           });
 
           var applied = {};
-          results[1].forEach((i)=>{
-            applied[i.e_id]=i.status
-          }) 
+          results[1].forEach((i) => {
+            applied[i.e_id] = i.status
+          })
 
           var japplied = []
-          results[3].forEach((i)=>{
-            japplied.push(i.j_id);
+          results[3].forEach((i) => {
+            japplied.push(i.j_id)
           })
-        
+
+          var offers = {};
+          results[4].forEach((i) => {
+            offers[i.j_id] = i.c_id
+          })
+
+
 
           res.render("student", {
-            pageTitle:"Student",
+            pageTitle: "Student",
             task: 3,
             results: results[0],
             applied: applied,
             japplied: japplied,
-            companies: companies
+            companies: companies,
+            offers: offers
           })
         }
-      }else{
+      } else {
         res.send(err);
       }
     });
-  }else{
+  } else {
     res.redirect("/student_login");
   }
 });
 
-app.get("/student/appliedjobs", (req, res)=>{
-  if(req.isAuthenticated()){
+app.get("/student/appliedjobs", (req, res) => {
+  if (req.isAuthenticated()) {
     const usn = req.user[0].usn;
-    connection.query('SELECT * FROM jobs; SELECT e_id, status FROM attempts WHERE usn = ?; SELECT c_id, name FROM company; SELECT j_id from applies WHERE usn =?', [usn, usn], (err, results)=>{
-      if(!err){
-        if(results){
-          
+    connection.query('SELECT * FROM jobs; SELECT e_id, status FROM attempts WHERE usn = ?; SELECT c_id, name FROM company; SELECT j_id, status from applies WHERE usn =?; SELECT * FROM offers', [usn, usn], (err, results) => {
+      if (!err) {
+        if (results) {
+
           var companies = {};
-          results[2].forEach((i)=>{
+          results[2].forEach((i) => {
             companies[i.c_id] = i.name
           });
 
           var applied = {};
-          results[1].forEach((i)=>{
-            applied[i.e_id]=i.status
-          }) 
-          var japplied = []
-          results[3].forEach((i)=>{
-            japplied.push(i.j_id);
+          results[1].forEach((i) => {
+            applied[i.e_id] = i.status
           })
-          
+          var japplied = {}
+          results[3].forEach((i) => {
+            japplied[i.j_id] = i.status
+          })
+
+          var offers = {};
+          results[4].forEach((i) => {
+            offers[i.j_id] = i.c_id
+          })
+
+
 
           res.render("student", {
-            pageTitle:"Student",
+            pageTitle: "Student",
             task: 4,
             results: results[0],
             applied: applied,
             japplied: japplied,
-            companies: companies
+            companies: companies,
+            offers: offers
           })
         }
-      }else{
+      } else {
         res.send(err);
       }
     });
-  }else{
+  } else {
     res.redirect("/student_login");
   }
 });
@@ -673,7 +819,7 @@ app.get("/viewresume", (req, res) => {
             ...user[0][0],
             ...user[1][0]
           };
-          console.log(final)
+
 
           res.render("student", {
             pageTitle: 'Student',
@@ -729,7 +875,7 @@ app.post("/buildresume", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.redirect("/buildresume");
+        res.redirect("/action/viewresume");
       }
     });
   } else {
@@ -745,7 +891,7 @@ app.get("/editresume", (req, res) => {
     connection.query('SELECT * FROM resume WHERE usn = ?', [usn], function (err, user, fields) {
       if (!err) {
         if (user) {
-          // console.log(user)
+
 
           res.render("student", {
             pageTitle: 'Student',
@@ -822,18 +968,18 @@ app.post("/cancelExam", (req, res) => {
 });
 
 
-app.post("/applyJob", (req, res)=>{
-  if(req.isAuthenticated()){
+app.post("/applyJob", (req, res) => {
+  if (req.isAuthenticated()) {
     const usn = req.user[0].usn;
     const jid = req.body.appliedjob;
-    connection.query('INSERT INTO applies(j_id,usn) VALUES (?,?)', [jid, usn], (err, results)=>{
-      if(!err){
+    connection.query('INSERT INTO applies VALUES (?,?, NULL)', [jid, usn], (err, results) => {
+      if (!err) {
         res.redirect("/action/student/viewjobs")
-      }else{
+      } else {
         res.send(err);
       }
     })
-  }else{
+  } else {
     res.redirect("/student_login");
   }
 });
@@ -846,7 +992,7 @@ app.post("/cancelJob", (req, res) => {
     connection.query('DELETE FROM applies WHERE usn=? AND j_id=?', [usn, jid], function (err, results) {
       if (!err) {
         res.redirect("/action/student/appliedjobs");
-      }else{
+      } else {
         res.send(err);
       }
     });

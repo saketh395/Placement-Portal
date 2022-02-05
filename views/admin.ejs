@@ -1,19 +1,54 @@
 <%- include('partials/header'); -%>
 
-<nav class="navbar navbar-expand-lg navbar-light color-green">
+<nav class="navbar navbar-expand-lg navbar-light color-purple">
   <div class="container-fluid">
-    <a class="navbar-brand " href="#"><span class="font-mb">ADMIN</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" >
+    <a class="navbar-brand " href="/admin"><span class="font-mb">ADMIN</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0" >
-        <!-- <li class="nav-item margin-tb">
-          <a class="nav-link active" aria-current="page" href="/admin"><span class="font-ml">Home</span></a>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item margin-tb">
+          <a class="nav-link " href="/admin"><span class="font-ml nl">Home</span></a>
+        </li>
+
+        <li class="nav-item margin-tb">
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <span class="font-ml nl">Student</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item " href="/addstudent"><span class="font-ml nl">Add Student</span></a></li>
+              <li><a class="dropdown-item" href="/action/viewstudent"><span class="font-ml nl">View Students</span></a>
+              </li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item margin-tb">
-          <a class="nav-link" href="#"><span class="font-ml">Link</span></a>
-        </li> -->
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <span class="font-ml nl">Company</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/addcompany"><span class="font-ml nl">Add Company</span></a></li>
+              <li><a class="dropdown-item" href="/action/viewcompany"><span class="font-ml nl">View Companies</span></a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item margin-tb">
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <span class="font-ml nl">Branches</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/addbranch"><span class="font-ml nl">Add Branch</span></a></li>
+              <li><a class="dropdown-item" href="/action/viewbranches"><span class="font-ml nl">View branches</span></a></li>
+            </ul>
+          </div>
+        </li>
+
+
         <li class="nav-item">
           <a class="btn btn-light btn-logout color-grey" href="/logout" role="button">Logout</a>
         </li>
@@ -22,94 +57,278 @@
 </nav>
 
 <div class="container-fluid color-grey">
-<div class="row nav-secondary">
-  <div class="col-lg-3 col-md-6">
-<a class="btn btn-entry color-grey margin-tb" href="/addstudent" role="button"><span class="font-ml">Add Student</span></a>
-  </div>
-  <div class="col-lg-3 col-md-6">
-<a class="btn btn-entry color-grey margin-tb" href="/action/viewstudent" role="button"><span class="font-ml">View Students</span></a>
-  </div>
 
-  <div class="col-lg-3 col-md-6">
-  <a class="btn btn-entry color-grey margin-tb" href="#" role="button"><span class="font-ml">...</span></a>
-  </div>
-
-  <div class="col-lg-3 col-md-6">
-  <a class="btn btn-entry color-grey margin-tb" href="#" role="button"><span class="font-ml">...</span></a>
-  </div>
-
-
-</div>
-<div class="row">
-  <div class="col-lg-6 col-md-12">
-    <%if(task === 0){%>
+  <div class="row">
+    <div class="col-lg-6 col-md-12">
+      <% var task%>
+      <% var count%>
+      <%if(task === 100){%>
       <div class="card">
         <div class="card-body">
-          <form  action="/action/addstudent" method="post">
-            <p class="par text-arsenic" style="font-size: 1.5rem">Enter Student Details</p>
-            <input type="text" class="form-control margin-tb" name="usn" placeholder="Enter USN">
-            <input type="date" class="form-control margin-tb" name="dob">
-            <br><br>
-            <button type="submit" class="btn color-green margin-tb"  value="0" class="btn color-green"><span class="font-ml">ADD</span></button>
+          <div class="row subhead"><span class="font-mb">Database Statistics</span></div>
+          <div class="row">
+            <div class="col-lg-4"> <span class="font-ml">Total Students :</span></div>
+            <div class="col-lg-4 "> <button class="btn  circle-button "
+                style="background-color: #b589d6;"><%=count[1]%></button></div>
+          </div>
+          <div class="row margin-tb">
+            <div class="row">
+              <p class="font-ml"> Per Department</p>
+            </div>
+            <div class="row inforow">
+              <%count[0].forEach((i) => { %>
+              <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                <button class="infobutton"><%=i.b_id%> : <%=i.snum%></button>
+              </div>
+              <% })%>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-lg-4"> <span class="font-ml">Total Companies :</span></div>
+            <div class="col-lg-4"> <button class="btn  circle-button "
+                style="background-color: #b589d6;"><%=count[2]%></button></div>
+          </div>
+          <div class="row margin-tb">
+            <div class="row">
+              <p class="font-ml"> Per Type:</p>
+            </div>
+            <div class="row inforow">
+              <%count[3].forEach((i) => { %>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 
-          </form>
+                <% const type = ["Product", "Service"]; %>
+                <button class="infobutton"><%=type[i.type]%> : <%=i.tnum%></button>
+              </div>
+              <% })%>
+            </div>
+          </div>
         </div>
       </div>
 
+      <% }%>
+      <%if(task === 0){%>
+      <%var branches %>
+      <div class="card">
+        <div class="card-body">
+          <form action="/action/addstudent" method="post">
+            <div class="row subhead"><span class="font-mb">Add Student</span></div>
+            <p class="par text-arsenic subhead" style="font-size: 1.5rem">Enter Student Details</p>
+            <input type="text" class="form-control margin-tb" name="usn" placeholder="Enter USN">
+            <input type="date" class="form-control margin-tb" name="dob">
+            <p class="par margin-tb" style="font-size: 1.2rem">Branch</p>
+            <select name="branch" id="branch" class="form-select">
+              <option selected>---</option>
+              <% branches.forEach((i)=>{ %>
+              <option value="<%=i%>"><%=i%></option>
+              <%  }) %>
 
-    <%}%>
+            </select>
+            <br><br>
+            <button type="submit" class="btn color-purple margin-tb" value="0"><span class="font-ml">ADD</span></button>
+          </form>
+        </div>
+      </div>
+      <%}%>
 
   <%  if (task===1) { %>
 
-    <div class="card">
-      <div class="card-body">
-          <p class="par text-arsenic" style="font-size: 1.5rem">Student Details</p>
-        <ul class="list-group list-group-flush"">
-          <li class="list-group-item">
+      <% const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; %>
+      <% function cdate(i){
+    var dob = i.dob.toString().slice(4, 15).split(" ");
+    var newdob = [];
+    newdob.push(dob[2]);
+    var mon = months.indexOf(dob[0]) + 1
+    if (mon < 10) {
+      mon = "0" + mon.toString();
+    } else {
+      mon = mon.toString();
+    }
+    newdob.push(mon);
+    newdob.push(dob[1])
+    newdob.reverse();
+    return newdob.join("-");
+   } %>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="row subhead"><span class="font-mb">Student Details</span></div>
+          <ul class="list-group list-group-flush"">
+          <li class=" list-group-item">
             <div class="row">
-              <div class="col-lg-3 col-sm-12 col-md-4">
-                  <h3>USN</h3>
+              <div class="col">
+                <h3>USN</h3>
               </div>
-              <div class="col-lg-3 col-sm-12 col-md-4">
-                  <h3>Date of Birth</h3>
+              <div class="col">
+                <h3>Name</h3>
+              </div>
+              <div class="col">
+                <h3>Date of Birth</h3>
+              </div>
+              <div class="col">
+                <h3>Branch</h3>
+              </div>
+              <div class="col ">
+                <h3 hidden>Date of Birth</h3>
               </div>
             </div>
-          </li>
-        <%  userData.forEach(function(i){%>
+            </li>
+            <%  userData.forEach(function(i){%>
             <li class="list-group-item">
-              <div class="row" style="">
-                <div class="col-lg-3 col-sm-12 col-md-4">
-                    <span class="font-ml"><%=i.usn%></span>
+              <div class="row">
+                <div class="col ">
+                  <span class="font-ml"><%=i.usn%></span>
                 </div>
-                <div class="col-lg-3 col-sm-12 col-md-4" >
-                  <span class="font-ml"><%=i.dob%></span>
-
+                <div class="col ">
+                  <span class="font-ml"><%=i.name%></span>
                 </div>
-                <div class="col-lg-3 col-sm-12 col-md-4">
-                  <form  action="/action/deleteStudent" method="post">
-                    <button class="btn btn-danger color-red" type="submit" value="<%=i.usn%>" name="delI" style=""><span>DELETE</span></button>
+                <div class="col ">
+                  <span class="font-ml"><%=cdate(i)%></span>
+                </div>
+                <div class="col ">
+                  <span class="font-ml"><%=i.b_id%></span>
+                </div>
 
+                <div class="col ">
+                  <form action="/action/deleteStudent" method="post">
+                    <button class="btn btn-danger color-red" type="submit" value="<%=i.usn%>"
+                      name="delI"><span>DELETE</span></button>
                   </form>
-
                 </div>
               </div>
             </li>
-
-        <%  })%>
-
-
-
-        </ul>
-
+            <%  })%>
+          </ul>
+        </div>
       </div>
+      <%  }%>
+      <%  if (task === 2){ %>
+
+      <div class="card">
+        <div class="card-body">
+          <form action="/action/addcompany" method="post">
+            <div class="row subhead"><span class="font-mb">Add Company</span></div>
+            <p class="par text-arsenic subhead" style="font-size: 1.5rem">Enter Company Details</p>
+            <input type="text" class="form-control margin-tb" name="name" placeholder="Enter Name">
+            <select name="type" class="form-select">
+              <option selected>Company Type</option>
+              <option value="0">Product</option>
+              <option value="1">Service</option>
+            </select>
+            <br><br>
+            <button type="submit" class="btn color-purple margin-tb" value="0"><span class="font-ml">ADD</span></button>
+          </form>
+        </div>
+      </div>
+      <%  }%>
+
+      <%  if (task===3) { %>
+      <div class="card">
+        <div class="card-body">
+          <div class="row subhead"><span class="font-mb">Company Details</span></div>
+          <ul class="list-group list-group-flush"">
+              <li class=" list-group-item">
+            <div class="row">
+              <div class="col-lg-3 col-sm-12 col-md-4">
+                <h3>ID</h3>
+              </div>
+              <div class="col-lg-3 col-sm-12 col-md-4">
+                <h3>Name</h3>
+              </div>
+              <div class="col-lg-3 col-sm-12 col-md-4">
+                <h3>Type</h3>
+              </div>
+            </div>
+            </li>
+            <%  cmpnyData.forEach(function(i){%>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-3 col-sm-12 col-md-4">
+                  <span class="font-ml"><%=i.c_id%></span>
+                </div>
+                <div class="col-lg-3 col-sm-12 col-md-4">
+                  <span class="font-ml"><%=i.name%></span>
+                </div>
+                <div class="col-lg-3 col-sm-12 col-md-4">
+                  <% const type = ["Product", "Service"]; %>
+                  <span class="font-ml"><%=type[i.type]%></span>
+                </div>
+                <div class="col-lg-3 col-sm-12 col-md-4">
+                  <form action="/action/deleteCompany" method="post">
+                    <button class="btn btn-danger color-red" type="submit" value="<%=i.id%>"
+                      name="delI"><span>DELETE</span></button>
+                  </form>
+                </div>
+              </div>
+            </li>
+            <%  })%>
+          </ul>
+        </div>
+      </div>
+      <%  }%>
+
+      <% if (task === 4) { %>
+      <div class="card">
+        <div class="card-body">
+          <form action="/action/addbranch" method="post">
+            <div class="row subhead"><span class="font-mb">Add Branch</span></div>
+            <p class="par text-arsenic subhead" style="font-size: 1.5rem">Enter Branch Details</p>
+            <input type="text" class="form-control margin-tb" name="bid" placeholder="Enter Branch ID (Eg: CSE)"
+              maxlength="3">
+            <input type="text" class="form-control margin-tb" name="bname" placeholder="Enter Branch Name ">
+            <br><br>
+            <button type="submit" class="btn color-purple margin-tb" value="0"><span class="font-ml">ADD</span></button>
+          </form>
+        </div>
+      </div>
+      <%} %>
+
+
+      <%  if (task===5) { %>
+        <div class="card">
+          <div class="card-body">
+            <div class="row subhead"><span class="font-mb">Branch Details</span></div>
+            <ul class="list-group list-group-flush"">
+                <li class=" list-group-item">
+              <div class="row">
+                <div class="col-lg-4 col-sm-12 col-md-4">
+                  <h3>Branch ID</h3>
+                </div>
+                <div class="col-lg-4 col-sm-12 col-md-4">
+                  <h3>Branch Name</h3>
+                </div>
+                <div class="col-lg-4 col-sm-12 col-md-4">
+                  <h3 hidden>Branch Name</h3>
+                </div>
+              </div>
+              </li>
+              <%  results.forEach(function(i){%>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-lg-4 col-sm-12 col-md-4">
+                    <span class="font-ml"><%=i.b_id%></span>
+                  </div>
+                  <div class="col-lg-4 col-sm-12 col-md-4">
+                    <span class="font-ml"><%=i.b_name%></span>
+                  </div>
+                  
+                  <div class="col-lg-4 col-sm-12 col-md-4">
+                    <form action="/action/deleteBranch" method="post">
+                      <button class="btn btn-danger color-red" type="submit" value="<%=i.b_id%>"
+                        name="delI"><span>DELETE</span></button>
+                    </form>
+                  </div>
+                </div>
+              </li>
+              <%  })%>
+            </ul>
+          </div>
+        </div>
+        <%  }%>
+
     </div>
-
-  <%  }%>
-
   </div>
-</div>
 
 </div>
-
 
 <%- include('partials/footer'); -%>

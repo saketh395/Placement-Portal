@@ -1,3 +1,7 @@
+//app.js for sql integration
+
+//requires
+
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -163,7 +167,7 @@ app.post('/authenticate/student', passport.authenticate('student-login', {
 });
 
 app.post('/authenticate/company', passport.authenticate('company-login', {
-  successRedirect: '/company',
+  successRedirect: '/companyPassCheck',
   failureRedirect: '/company_loginf'
 }), function (req, res) {});
 
